@@ -1,0 +1,158 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+:root {
+    /* Paleta de colores con verde como color principal */
+    --verde-principal: #2a8d4f;      /* Verde medio - color dominante */
+    --verde-oscuro: #1a5a32;         /* Verde oscuro para contrastar */
+    --verde-claro: #7cc296;          /* Verde claro para elementos alternos */
+    --verde-palido: #e9f5ef;         /* Verde muy pálido para fondos */
+    --marron-complementario: #8d5c2a; /* Marrón complementario para acentos */
+    --naranja-suave: #f4a261;        /* Naranja suave para llamadas a la acción */
+    --gris-neutro: #f8f9fa;          /* Gris neutro para fondos secundarios */
+}
+
+body {
+    background-color: var(--verde-palido);
+    min-height: 100vh;
+}
+
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to right, var(--verde-principal), var(--verde-oscuro));
+    padding: 15px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: white;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.8rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.bar {
+    height: 3px;
+    width: 100%;
+    background-color: white;
+    margin: 3px 0;
+    border-radius: 1px;
+}
+
+.logout-btn {
+    background-color: var(--naranja-suave);
+    color: var(--verde-oscuro);
+    border: none;
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logout-btn:hover {
+    background-color: white;
+    color: var(--naranja-suave);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+main {
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.contenido-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.contenido-box {
+    background-color: white;
+    border-radius: 15px;
+    padding: 50px 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: var(--verde-oscuro);
+    border: 2px solid var(--verde-claro);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 150px;
+    box-shadow: 0 5px 15px rgba(42, 141, 79, 0.1);
+}
+
+.contenido-box:nth-child(odd) {
+    background-color: white;
+}
+
+.contenido-box:nth-child(even) {
+    background-color: var(--verde-palido);
+}
+
+.contenido-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(42, 141, 79, 0.2);
+    border-color: var(--verde-principal);
+    background-color: white;
+}
+
+.contenido-box h2 {
+    font-size: 1.5rem;
+    color: var(--verde-principal);
+    font-weight: 600;
+}
+
+/* Pequeños acentos de color para dar variedad pero manteniendo el verde como dominante */
+.contenido-box:nth-child(1), .contenido-box:nth-child(4) {
+    border-left: 5px solid var(--verde-principal);
+}
+
+.contenido-box:nth-child(2), .contenido-box:nth-child(5) {
+    border-left: 5px solid var(--marron-complementario);
+}
+
+.contenido-box:nth-child(3), .contenido-box:nth-child(6) {
+    border-left: 5px solid var(--naranja-suave);
+}
+
+/* Efectos hover distintos pero armónicos */
+.contenido-box:nth-child(1):hover, .contenido-box:nth-child(4):hover {
+    border-color: var(--verde-principal);
+    border-left: 5px solid var(--verde-principal);
+    background-color: rgba(42, 141, 79, 0.05);
+}
+
+.contenido-box:nth-child(2):hover, .contenido-box:nth-child(5):hover {
+    border-color: var(--verde-principal);
+    border-left: 5px solid var(--marron-complementario);
+    background-color: rgba(42, 141, 79, 0.05);
+}
+
+.contenido-box:nth-child(3):hover, .contenido-box:nth-child(6):hover {
+    border-color: var(--verde-principal);
+    border-left: 5px solid var(--naranja-suave);
+    background-color: rgba(42, 141, 79, 0.05);
+}
+
+@media (max-width: 768px) {
+    .contenido-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+}

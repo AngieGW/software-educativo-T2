@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historia 1</title>
+    <link rel="stylesheet" href="libros.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Menú lateral -->
+        <aside class="sidebar">
+            <div class="sidebar-title">Menú</div>
+            <nav class="menu">
+                <a href="menu.html" class="menu-item active">
+                    <i class="fas fa-home"></i> Inicio
+                </a>
+                <a href="proyec1.html" class="menu-item">
+                    <i class="fas fa-graduation-cap"></i> Proyecto I
+                </a>
+                <a href="proyec2.html" class="menu-item">
+                    <i class="fas fa-graduation-cap"></i> Proyecto II
+                </a>
+                <a href="proyec3.html" class="menu-item">
+                    <i class="fas fa-graduation-cap"></i> Proyecto III
+                </a>
+                <a href="biblioteca.html" class="menu-item">
+                    <i class="fas fa-book"></i> Biblioteca
+                </a>
+                <a href="recursos.html" class="menu-item">
+                    <i class="fas fa-boxes"></i> Evaluación
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Contenido principal -->
+        <main class="content">
+            <!-- Encabezado -->
+            <header class="header">
+            <div>
+                <a class="logout-btn"
+                href="biblioteca.html">Atras</a>
+            </div>
+                <h1 id="contenido-titulo">CONTENIDO 1</h1>
+                <button class="logout-btn"  onclick="window.location.href='Index.html'">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+                </button>
+            </header>
+
+            <!-- Área de contenido -->
+            <div class="story-container">
+                <div class="story-text">
+                    <p id="typing-text"></p>
+                </div>
+                
+                <!-- Controles de navegación -->
+                <div class="navigation-controls">
+                    <button class="nav-button prev-button">&lt;</button>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <button class="nav-button next-button">&gt;</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="historia1.js"></script>
+</body>
+</html>

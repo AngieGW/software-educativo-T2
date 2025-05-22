@@ -1,0 +1,169 @@
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family:Arial, sans-serif;
+    }
+
+:root {
+    /* Paleta de colores */
+    --color-verde: #2a8d4f; /*Color principal*/
+    --color-verde-claro: #35a35d;
+    --color-verde-claro2: #e9f5ef;
+    --color-verde-claro1: #d8e7de;
+    --color-verde-oscuro: #1a5a32;/*Color para resaltar*/
+    --color-gris-palido: #f8fafcd5;/*fondos segundarios*/
+    --verde-claro: #7cc296;          /* Verde claro para elementos alternos */   
+    --naranja-suave: #f4a261;        /* Naranja suave para llamadas a la acción */
+    --naranja-suave1: #f5b480;        /* Naranja suave para llamadas a la acción */
+    /* Colores adicionales para mejor contraste */
+    --color-texto: #2e2d2d;
+    --color-blanco: #fff;
+    --color-gris-claro: #f1f1f1;
+    --color-sombra: rgba(0, 0, 0, 0.1);
+}
+body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-color:var(--color-verde-claro1);
+    color: var(--color-texto);
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    
+}
+.cabecera {
+    display: flex; 
+    justify-content: flex-end;
+    width: 100%;
+    background-color: var(--color-verde);
+    color: var(--color-texto);
+    box-shadow: 0 2px 5px var(--color-sombra);
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 10px;
+
+}
+.boton-volver{
+    padding: 8px 15px;
+    border: none;
+    border-radius: 20px;
+    background-color: var(--naranja-suave);
+    color: var(--color-verde-oscuro);
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.contenedor-login {
+    background-color: var(--color-blanco);
+    height: 360px;
+    border-radius: 5rem;
+    width: 400px;
+    color: var(--color-verde-claro);
+    box-shadow: 10px 5px 5px var(--color-verde-oscuro);
+
+
+
+}
+
+.icono-login  {
+    background-color: var(--color-gris-claro);
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    padding-bottom: 30px;
+    margin: 0 auto;
+    padding: 15px ;
+    margin-top: 2.5rem;
+}
+
+
+.contenedor-ingresar{
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+input {
+    width: 85%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: none;
+    border-bottom: 2px solid green;
+    background-color: transparent;
+    display: block;
+    outline: none;
+    position: relative;
+    left: 10px;
+}
+.inicio-input{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    
+}
+.iconos{
+    position: relative;
+    top: .5rem;
+    right: 2rem;
+    cursor: pointer;
+}
+.icono-eye-open{
+    display: none;
+}
+
+
+.hidden {
+    margin: 0 auto;
+    margin-top: 1rem;
+    display: none;
+    color: red;
+    font-size: 14px;
+}
+
+
+.boton-ingresar {
+    width: 80%;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--color-verde-claro);
+    color: var(--color-texto);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 0 auto;
+
+}
+.boton-volver:hover{
+    background-color: white;
+    color: var(--naranja-suave);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.icono-login:hover{
+    background-color: var(--verde-claro);
+}
+
+
+.boton-ingresar:hover{
+    background-color: var(--color-verde);
+    color: var(--color-gris-palido);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}

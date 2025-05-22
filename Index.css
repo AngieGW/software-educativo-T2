@@ -1,0 +1,102 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+:root {
+    /* Paleta de colores */
+    --color-verde: #2a8d4f; /*Color principal*/
+    --color-verde-claro: #35a35d;
+    --color-verde-claro2: #e9f5ef;
+    --color-verde-claro1: #d8e7de;
+    --color-verde-oscuro: #1a5a32;/*Color para resaltar*/
+    --color-gris-palido: #f8f9fa;/*fondos segundarios*/
+    --verde-claro: #7cc296;          /* Verde claro para elementos alternos */   
+    /* Colores adicionales para mejor contraste */
+    --color-texto: #333;
+    --color-blanco: #fff;
+    --color-gris-claro: #f1f1f1;
+    --color-sombra: rgba(0, 0, 0, 0.1);
+}
+body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-color:var(--color-verde-claro1);
+    color: var(--color-texto);
+}
+.cabecera {
+    width: 100%;
+    background-color: var(--color-verde);
+    color: var(--color-texto);
+    box-shadow: 0 2px 5px var(--color-sombra);
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 10px;
+}
+.cabecera-navegacion{
+    display: flex;
+    justify-content: center;
+}
+.texto-principal{
+    background-color: var(--color-verde-claro);
+    padding: .5rem;
+    border-radius: 1rem;
+    color: var(--color-gris-claro);
+    
+}
+.contenido-principal {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.contenedor-seleccion {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5rem;
+    height: 100vh;
+    width: 100%;
+}
+.estudiante-boton {
+    background-color: var(--color-blanco);
+    height: 350px;
+    border-radius: 5rem;
+    width: 400px;
+    color: var(--color-verde-claro);
+    box-shadow: 10px 5px 5px var(--color-verde-oscuro)
+
+}
+.icono{
+    background-color: var(--color-gris-claro);
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    padding-bottom: 30px;
+    margin: 0 auto;
+    padding: 15px 
+}
+.estudiante-boton:hover{
+    background-color: var( --color-verde-claro2);
+    transform: translateY(-1rem);
+    transition: all 0.5s ease-out;
+}
+.icono:hover{
+    background-color: var(--verde-claro);
+}
+.texto-carta{
+    position: relative;
+    top: 1.5rem; 
+}
+button {
+    
+    margin: 10px;
+    padding: 15px 25px;
+    font-size: 18px;
+    cursor: pointer;
+    border: 1px solid var(--color-azul-claro);
+}
