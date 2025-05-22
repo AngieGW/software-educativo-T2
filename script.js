@@ -2,6 +2,7 @@ const buttonLogin = document.getElementById("loginButton");
 let passwordField = document.getElementById("password");
 let errorMessage = document.getElementById("errorMessage");
 let contraseñaCorrecta = "1234"; // Aquí puedes poner la contraseña real
+
 /* Apartado Iconos Boton */
 let mostrarIconos = document.getElementById("mostrar-iconos");
 let eyeOpen = document.querySelector(".icono-eye-open");
@@ -14,6 +15,7 @@ buttonLogin.addEventListener("click", (e) => {
 
     if (passwordField.value === contraseñaCorrecta) {
         errorMessage.style.display = "none"; // Oculta el mensaje si es correcta
+        window.location.href = "menuad.html"; // Inicia la sesión como admin
     } else {
         errorMessage.style.display = "block"; // Muestra el mensaje si es incorrecta
     }
