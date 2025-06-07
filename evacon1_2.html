@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CONTENIDO 1</title>
+    <title>EVALUACIÓN CONTENIDO 1</title>
     <link rel="stylesheet" href="con1.css">
+    <link rel="stylesheet" href="evaluacion.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -13,7 +14,7 @@
         <aside class="sidebar">
             <div class="sidebar-title">Menú</div>
             <nav class="menu">
-                <a href="menu.html" class="menu-item active">
+                <a href="menu.html" class="menu-item">
                     <i class="fas fa-home"></i> Inicio
                 </a>
                 <a href="proyec1.html" class="menu-item">
@@ -28,7 +29,7 @@
                 <a href="biblioteca.html" class="menu-item">
                     <i class="fas fa-book"></i> Biblioteca
                 </a>
-                <a href="eva.html" class="menu-item">
+                <a href="eva.html" class="menu-item active">
                     <i class="fas fa-boxes"></i> Evaluacion
                 </a>
             </nav>
@@ -39,14 +40,45 @@
             <!-- Encabezado -->
             <header class="header">
                 <div>
-                    <a class="logout-btn"
-                    href="evapro1.html">Atras</a>
+                    <a class="logout-btn" href="evapro1.html">Atrás</a>
                 </div>
-                <h1 id="contenido-titulo">EVALUACION CONTENIDO 1</h1>
-                <button class="logout-btn"  onclick="window.location.href='Index.html'">
+                <h1 id="contenido-titulo">EVALUACIÓN CONTENIDO 1</h1>
+                <button class="logout-btn" onclick="window.location.href='Index.html'">
                     <i class="fas fa-sign-out-alt"></i> Cerrar sesión
                 </button>
             </header>
 
+            <!-- Área de evaluación -->
+            <div class="evaluacion-container">
+
+                <div class="pregunta-container">
+                    <div class="pregunta-header">
+                        <span>PREGUNTA O INDICACIÓN DEL EJERCICIO</span>
+                    </div>
+                    
+                    <div class="pregunta-contenido">
+                        <p id="pregunta-texto">Cargando pregunta...</p>
+                    </div>
+
+                    <div class="opciones-container">
+                        <button class="opcion-btn" data-opcion="A" id="opcion-a">
+                            <span class="opcion-letra">A</span>
+                            <span class="opcion-texto" id="texto-a">Opción A</span>
+                        </button>
+                        <button class="opcion-btn" data-opcion="B" id="opcion-b">
+                            <span class="opcion-letra">B</span>
+                            <span class="opcion-texto" id="texto-b">Opción B</span>
+                        </button>
+                        <button class="opcion-btn" data-opcion="C" id="opcion-c">
+                            <span class="opcion-letra">C</span>
+                            <span class="opcion-texto" id="texto-c">Opción C</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="evaluacion.js"></script>
 </body>
 </html>
