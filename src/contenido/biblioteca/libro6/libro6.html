@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CONTENIDO 1</title>
-    <link rel="stylesheet" href="eva.css">
+    <title>Historia 1</title>
+    <link rel="stylesheet" href="libros.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -13,7 +13,7 @@
         <aside class="sidebar">
             <div class="sidebar-title">Menú</div>
             <nav class="menu">
-                <a href="menu.html" class="menu-item">
+                <a href="menu.html" class="menu-item active">
                     <i class="fas fa-home"></i> Inicio
                 </a>
                 <a href="proyec1.html" class="menu-item">
@@ -28,43 +28,44 @@
                 <a href="biblioteca.html" class="menu-item">
                     <i class="fas fa-book"></i> Biblioteca
                 </a>
-                <a href="eva.html" class="menu-item">
-                    <i class="fas fa-boxes"></i> Evaluacion
+                <a href="recursos.html" class="menu-item">
+                    <i class="fas fa-boxes"></i> Evaluación
                 </a>
             </nav>
         </aside>
+
+        <!-- Contenido principal -->
         <main class="content">
             <!-- Encabezado -->
             <header class="header">
                 <div>
                     <a class="logout-btn"
-                    href="eva.html">Atras</a>
+                    href="biblioteca.html">Atras</a>
                 </div>
-                <h1 id="contenido-titulo">Evaluaciones de Proyecto 3</h1>
+                <h1 id="contenido-titulo">CONTENIDO 1</h1>
                 <button class="logout-btn"  onclick="window.location.href='Index.html'">
                     <i class="fas fa-sign-out-alt"></i> Cerrar sesión
                 </button>
             </header>
-            <div class="contenido-grid">
-                <a href="evacon1_3.html" class="contenido-box">
-                    <h2>Contenido 1</h2>
-                </a>
-                <a href="evacon2_3.html" class="contenido-box">
-                    <h2>Contenido 2</h2>
-                </a>
-                <a href="evacon3_3.html" class="contenido-box">
-                    <h2>Contenido 3</h2>
-                </a>
-                <a href="evacon4_3.html" class="contenido-box">
-                    <h2>Contenido 4</h2>
-                </a>
-                <a href="evacon5_3.html" class="contenido-box">
-                    <h2>Contenido 5</h2>
-                </a>
-                <a href="evacon6_3.html" class="contenido-box">
-                    <h2>Contenido 6</h2>
-                </a>
-            </div>       
+
+            <!-- Área de contenido -->
+            <div class="story-container">
+                <div class="story-text">
+                    <p id="typing-text"></p>
+                </div>
+                
+                <!-- Controles de navegación -->
+                <div class="navigation-controls">
+                    <button class="nav-button prev-button">&lt;</button>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <button class="nav-button next-button">&gt;</button>
+                </div>
+            </div>
+        </main>
     </div>
+
+    <script src="historia1.js"></script>
 </body>
 </html>

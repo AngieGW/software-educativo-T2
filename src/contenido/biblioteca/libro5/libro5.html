@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CONTENIDO </title>
-    <link rel="stylesheet" href="con1.css">
+    <title>Historia 1</title>
+    <link rel="stylesheet" href="libros.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -28,8 +28,8 @@
                 <a href="biblioteca.html" class="menu-item">
                     <i class="fas fa-book"></i> Biblioteca
                 </a>
-                <a href="eva.html" class="menu-item">
-                    <i class="fas fa-boxes"></i> Evaluacion
+                <a href="recursos.html" class="menu-item">
+                    <i class="fas fa-boxes"></i> Evaluación
                 </a>
             </nav>
         </aside>
@@ -40,13 +40,32 @@
             <header class="header">
                 <div>
                     <a class="logout-btn"
-                    href="evapro1.html">Atras</a>
+                    href="biblioteca.html">Atras</a>
                 </div>
-                <h1 id="contenido-titulo">EVALUACION CONTENIDO 6</h1>
+                <h1 id="contenido-titulo">CONTENIDO 1</h1>
                 <button class="logout-btn"  onclick="window.location.href='Index.html'">
                     <i class="fas fa-sign-out-alt"></i> Cerrar sesión
                 </button>
             </header>
 
+            <!-- Área de contenido -->
+            <div class="story-container">
+                <div class="story-text">
+                    <p id="typing-text"></p>
+                </div>
+                
+                <!-- Controles de navegación -->
+                <div class="navigation-controls">
+                    <button class="nav-button prev-button">&lt;</button>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <button class="nav-button next-button">&gt;</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="historia1.js"></script>
 </body>
 </html>
