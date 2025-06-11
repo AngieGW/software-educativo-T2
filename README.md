@@ -1,3 +1,11 @@
+# EYBER
+le acomode las rutas, hasta proyecto 1. Hasta el contenido 3
+Del contenido 4 en adelante hay que acomodar
+
+Ya estan ordenadas la de index, confimacion, menu, biblioteca y evaluacion (solo las principales, las que estan dentro de la carpeta, no)
+
+
+
 # software-educativo-T2
 Esto es todo lo que tenemos hasta ahora, practicamente lo que te mostre en el video. De la parte del backend no tiene NADAAA porque no consigo como hacer que la base de datos conecte de ninguna manera.
 
