@@ -73,12 +73,12 @@ function loginStudent() {
     sessionStorage.setItem('loginTime', Date.now().toString());
     
     // Redireccionar al menú principal
-    window.location.href = "menu.html";
+    window.location.href = "/src/contenido/menu.html";
 }
 
 // Agregar event listener al botón de estudiante si existe
 document.addEventListener('DOMContentLoaded', function() {
-    const studentButton = document.querySelector('.estudiante-boton[onclick*="menu.html"]');
+    const studentButton = document.querySelector('.estudiante-boton[onclick*="/src/contenido/menu.html"]');
     if (studentButton) {
         // Remover el onclick original y agregar nuestro event listener
         studentButton.removeAttribute('onclick');
