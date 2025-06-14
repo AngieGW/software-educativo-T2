@@ -1,4 +1,3 @@
-
 :root {
     /* Paleta de colores con verde como color principal */
     --verde-principal: #2a8d4f;      /* Verde medio - color dominante */
@@ -280,5 +279,78 @@ body {
 .libro-1:hover{
     transform: translateY(-1rem);
     transition: all 0.5s ease-out;
+}
+
+/* Estilos personalizados para el formulario de agregar preguntas */
+.form-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--color-blanco);
+    border-radius: 18px;
+    box-shadow: 0 4px 16px var(--color-sombra);
+    padding: 2.5rem 2rem 2rem 2rem;
+    margin: 3rem auto 2rem auto;
+    max-width: 480px;
+    width: 100%;
+}
+
+.form-section h2 {
+    color: var(--verde-principal);
+    margin-bottom: 1.5rem;
+    font-size: 1.6rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+#add-question-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    width: 100%;
+}
+
+#add-question-form label {
+    font-weight: 600;
+    color: var(--verde-oscuro);
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    font-size: 1rem;
+}
+
+#add-question-form input[type="text"],
+#add-question-form select {
+    border: 1.5px solid var(--verde-claro);
+    border-radius: 8px;
+    padding: 0.7rem;
+    font-size: 1rem;
+    background: var(--gris-neutro);
+    color: var(--color-texto);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    margin-top: 0.2rem;
+    outline: none;
+}
+
+#add-question-form input[type="text"]:focus,
+#add-question-form select:focus {
+    border-color: var(--verde-principal);
+    background: var(--verde-palido);
+    box-shadow: 0 0 0 2px var(--verde-claro1);
+}
+
+#add-question-form button.logout-btn {
+    align-self: flex-end;
+    margin-top: 1rem;
+    font-size: 1rem;
+    padding: 0.7rem 1.5rem;
+}
+
+#mensaje-exito {
+    font-weight: bold;
+    color: var(--verde-principal) !important;
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 1.1rem;
 }
 

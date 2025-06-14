@@ -509,6 +509,191 @@ body {
     z-index: 999;
 }
 
+/* === Formulario de contenido para confor.html === */
+.form-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--color-blanco);
+    border-radius: 18px;
+    box-shadow: 0 4px 16px var(--color-sombra);
+    padding: 2.5rem 2rem 2rem 2rem;
+    margin: 2.5rem auto 2rem auto;
+    max-width: 600px;
+    width: 100%;
+}
+
+.contenido-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    width: 100%;
+}
+
+.contenido-form label {
+    font-weight: 600;
+    color: var(--verde-oscuro);
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    font-size: 1rem;
+}
+
+.contenido-form input[type="text"] {
+    border: 1.5px solid var(--verde-claro);
+    border-radius: 8px;
+    padding: 0.7rem;
+    font-size: 1rem;
+    background: var(--gris-neutro);
+    color: var(--color-texto);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    margin-top: 0.2rem;
+    outline: none;
+}
+
+.contenido-form input[type="text"]:focus {
+    border-color: var(--verde-principal);
+    background: var(--verde-palido);
+    box-shadow: 0 0 0 2px var(--verde-claro);
+}
+
+.editor-toolbar {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.3rem;
+}
+
+.editor-toolbar button {
+    background: var(--verde-palido);
+    border: 1px solid var(--verde-claro);
+    border-radius: 6px;
+    padding: 0.25rem 0.7rem;
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: var(--verde-principal);
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 1px 2px var(--color-sombra);
+}
+
+.editor-toolbar button:hover {
+    background: var(--verde-claro);
+    color: #fff;
+    box-shadow: 0 2px 6px var(--color-sombra);
+}
+
+.editor-area {
+    min-height: 120px;
+    max-height: 300px;
+    border: 1.5px solid var(--verde-claro);
+    border-radius: 10px;
+    background: var(--gris-neutro);
+    padding: 0.8rem;
+    font-size: 1.08rem;
+    color: var(--color-texto);
+    margin-bottom: 0.2rem;
+    outline: none;
+    overflow-y: auto;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 1px 4px var(--color-sombra);
+}
+
+.editor-area:focus {
+    border-color: var(--verde-principal);
+    background: var(--verde-palido);
+    box-shadow: 0 0 0 2px var(--verde-claro);
+}
+
+.content-navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem 0;
+    gap: 1.2rem;
+}
+
+.nav-button {
+    background-color: var(--verde-claro);
+    color: var(--color-blanco);
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: none;
+    font-size: 22px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 2px 6px var(--color-sombra);
+}
+
+.nav-button:disabled {
+    background-color: #e0e0e0;
+    color: #aaa;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.nav-button:hover:not(:disabled) {
+    background-color: var(--verde-principal);
+    color: #fff;
+    transform: scale(1.1);
+}
+
+#contador-cuadro {
+    font-weight: bold;
+    color: var(--verde-principal);
+    font-size: 1.1rem;
+}
+
+.logout-btn {
+    background-color: var(--naranja-suave);
+    color: var(--verde-oscuro);
+    border: none;
+    padding: 0.8rem 1.7rem;
+    border-radius: 22px;
+    cursor: pointer;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    gap: 10px;
+    font-size: 1.08rem;
+    transition: all 0.3s ease;
+    align-self: flex-end;
+    margin-top: 1.2rem;
+    box-shadow: 0 2px 8px var(--color-sombra);
+}
+
+.logout-btn:hover {
+    background-color: var(--color-blanco);
+    color: var(--naranja-suave);
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 4px 12px var(--color-sombra);
+    border: 1.5px solid var(--naranja-suave);
+}
+
+.error-msg {
+    color: #c0392b;
+    font-weight: bold;
+    margin-top: 0.5rem;
+    text-align: center;
+    background: #ffeaea;
+    border-radius: 7px;
+    padding: 0.5rem 0.7rem;
+}
+
+.success-msg {
+    color: var(--verde-principal);
+    font-weight: bold;
+    margin-top: 0.5rem;
+    text-align: center;
+    background: #e9f5ef;
+    border-radius: 7px;
+    padding: 0.5rem 0.7rem;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .evaluacion-container {
