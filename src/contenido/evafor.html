@@ -1,0 +1,124 @@
+<!-- ...código existente arriba... -->
+<main class="content">
+    <!-- Encabezado -->
+    <header class="header">
+        <div>
+            <a class="logout-btn"
+            href="/src/contenido/eva.html">Atras</a>
+        </div>
+        <h1 id="contenido-titulo">Evaluaciones de Proyecto 1</h1>
+        <button class="logout-btn"  onclick="window.location.href='/src/Index.html'">
+            <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+        </button>
+    </header>
+
+    <!-- Formulario para agregar preguntas -->
+    <section class="form-section" style="margin: 30px 0;">
+        <h2>Agregar nueva pregunta</h2>
+        <form id="add-question-form" style="display: flex; flex-direction: column; gap: 16px; max-width: 500px;">
+            <label>
+                Pregunta:
+                <input type="text" name="pregunta" required style="width: 100%; padding: 8px;">
+            </label>
+            <label>
+                Opción 1:
+                <input type="text" name="opcion1" required style="width: 100%; padding: 8px;">
+            </label>
+            <label>
+                Opción 2:
+                <input type="text" name="opcion2" required style="width: 100%; padding: 8px;">
+            </label>
+            <label>
+                Opción 3:
+                <input type="text" name="opcion3" required style="width: 100%; padding: 8px;">
+            </label>
+            <label>
+                Respuesta correcta:
+                <select name="correcta" required style="width: 100%; padding: 8px;">
+                    <option value="">Seleccione la opción correcta</option>
+                    <option value="1">Opción 1</option>
+                    <option value="2">Opción 2</option>
+                    <option value="3">Opción 3</option>
+                </select>
+            </label>
+            <label>
+                Tema:
+                <select name="tema" required style="width: 100%; padding: 8px;">
+                    <option value="">Seleccione un tema</option>
+                    <option value="Contenido 1">Contenido 1</option>
+                    <option value="Contenido 2">Contenido 2</option>
+                    <option value="Contenido 3">Contenido 3</option>
+                    <option value="Contenido 4">Contenido 4</option>
+                    <option value="Contenido 5">Contenido 5</option>
+                    <option value="Contenido 6">Contenido 6</option>
+                </select>
+            </label>
+            <label>
+                Proyecto:
+                <select name="proyecto" required style="width: 100%; padding: 8px;">
+                    <option value="">Seleccione un proyecto</option>
+                    <option value="Proyecto I">Proyecto I</option>
+                    <option value="Proyecto II">Proyecto II</option>
+                    <option value="Proyecto III">Proyecto III</option>
+                </select>
+            </label>
+            <button type="submit" class="logout-btn" style="width: fit-content;">Agregar Pregunta</button>
+        </form>
+        <div id="mensaje-exito" style="color: green; margin-top: 10px; display: none;">
+            ¡Pregunta agregada correctamente!
+        </div>
+    </section>
+
+    <div class="contenido-grid">
+        <a href="/src/contenido/evaluacion/pro1/eva_pro1_con1.html" class="contenido-box">
+            <h2>Contenido 1</h2>
+        </a>
+        <a href="/src/contenido/evaluacion/pro1/eva_pro1_con2.html" class="contenido-box">
+            <h2>Contenido 2</h2>
+        </a>
+        <a href="/src/contenido//evaluacion/pro1/eva_pro1_con3.html" class="contenido-box">
+            <h2>Contenido 3</h2>
+        </a>
+        <a href="/src/contenido/evaluacion/pro1/eva_pro1_con4.html" class="contenido-box">
+            <h2>Contenido 4</h2>
+        </a>
+        <a href="/src/contenido/evaluacion/pro1/eva_pro1_con5.html" class="contenido-box">
+            <h2>Contenido 5</h2>
+        </a>
+        <a href="/src/contenido/evaluacion/pro1/eva_pro1_con6.html" class="contenido-box">
+            <h2>Contenido 6</h2>
+        </a>
+    </div>
+</main>
+<!-- ...código existente abajo... -->
+
+<script>
+// Guardar preguntas en localStorage (solo para demostración, no persistente en servidor)
+document.getElementById('add-question-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    // Obtener datos del formulario
+    const form = e.target;
+    const pregunta = form.pregunta.value.trim();
+    const opcion1 = form.opcion1.value.trim();
+    const opcion2 = form.opcion2.value.trim();
+    const opcion3 = form.opcion3.value.trim();
+    const correcta = form.correcta.value;
+    const tema = form.tema.value;
+    const proyecto = form.proyecto.value;
+
+    // Validación simple
+    if (!pregunta || !opcion1 || !opcion2 || !opcion3 || !correcta || !tema || !proyecto) return;
+
+    // Guardar en localStorage (puedes adaptar esto a tu backend)
+    const preguntas = JSON.parse(localStorage.getItem('preguntas') || '[]');
+    preguntas.push({ pregunta, opciones: [opcion1, opcion2, opcion3], correcta, tema, proyecto });
+    localStorage.setItem('preguntas', JSON.stringify(preguntas));
+
+    // Mostrar mensaje de éxito
+    document.getElementById('mensaje-exito').style.display = 'block';
+    form.reset();
+    setTimeout(() => {
+        document.getElementById('mensaje-exito').style.display = 'none';
+    }, 2000);
+});
+</script>
