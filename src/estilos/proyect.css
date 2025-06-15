@@ -8,6 +8,7 @@
 :root {
     /* Paleta de colores con verde como color principal */
     --verde-principal: #2a8d4f;      /* Verde medio - color dominante */
+    --verde-claro1: #98e0b3;
     --verde-oscuro: #1a5a32;         /* Verde oscuro para contrastar */
     --verde-claro: #7cc296;          /* Verde claro para elementos alternos */
     --verde-palido: #e9f5ef;         /* Verde muy pálido para fondos */
@@ -91,11 +92,12 @@ main {
     text-decoration: none;
     color: var(--verde-oscuro);
     border: 2px solid var(--verde-claro);
+    border-left: 4px solid var(--verde-claro);
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 150px;
-    box-shadow: 0 5px 15px rgba(42, 141, 79, 0.1);
+    box-shadow: 5px 5px 5px 0 var(--verde-oscuro);
 }
 
 .contenido-box:nth-child(odd) {
@@ -108,9 +110,11 @@ main {
 
 .contenido-box:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(42, 141, 79, 0.2);
+    box-shadow: 5px 5px 5px 0 var(--verde-claro);
     border-color: var(--verde-principal);
     background-color: white;
+    border: 2px solid var(--verde-claro1);
+    border-left: 4px solid var(--verde-claro1);
 }
 
 .contenido-box h2 {
@@ -119,37 +123,7 @@ main {
     font-weight: 600;
 }
 
-/* Pequeños acentos de color para dar variedad pero manteniendo el verde como dominante */
-.contenido-box:nth-child(1), .contenido-box:nth-child(4) {
-    border-left: 5px solid var(--verde-principal);
-}
 
-.contenido-box:nth-child(2), .contenido-box:nth-child(5) {
-    border-left: 5px solid var(--marron-complementario);
-}
-
-.contenido-box:nth-child(3), .contenido-box:nth-child(6) {
-    border-left: 5px solid var(--naranja-suave);
-}
-
-/* Efectos hover distintos pero armónicos */
-.contenido-box:nth-child(1):hover, .contenido-box:nth-child(4):hover {
-    border-color: var(--verde-principal);
-    border-left: 5px solid var(--verde-principal);
-    background-color: rgba(42, 141, 79, 0.05);
-}
-
-.contenido-box:nth-child(2):hover, .contenido-box:nth-child(5):hover {
-    border-color: var(--verde-principal);
-    border-left: 5px solid var(--marron-complementario);
-    background-color: rgba(42, 141, 79, 0.05);
-}
-
-.contenido-box:nth-child(3):hover, .contenido-box:nth-child(6):hover {
-    border-color: var(--verde-principal);
-    border-left: 5px solid var(--naranja-suave);
-    background-color: rgba(42, 141, 79, 0.05);
-}
 
 @media (max-width: 768px) {
     .contenido-grid {

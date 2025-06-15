@@ -65,7 +65,7 @@
             color: #333;
             position: absolute;
             top: 1.5rem;
-            left: -260px;
+            left: -250px;
             display: none;
             animation: fadeIn 0.3s ease-in-out;
             pointer-events: auto;
@@ -245,6 +245,15 @@
             }
         });
 
+        // Mensaje de presentación al recargar la página
+        setTimeout(() => {
+            showCustomMessage(
+                speechBubble,
+                bunnyImg,
+                "¡Un gusto! Soy Bunny 🐰 y te acompañaré en todo tu aprendizaje.",
+                8000
+            );
+        }, 1000);
 
         // Iniciar rotación y frases automáticas
         startRotation();
