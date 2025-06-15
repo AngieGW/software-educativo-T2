@@ -250,7 +250,7 @@
             showCustomMessage(
                 speechBubble,
                 bunnyImg,
-                "¡Un gusto! Soy Bunny 🐰 y te acompañaré en todo tu aprendizaje.",
+                "¡Soy Bunny 🐰 y te acompañaré en esta nueva tarea.",
                 8000
             );
         }, 1000);
