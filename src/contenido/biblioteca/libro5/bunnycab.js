@@ -1,45 +1,45 @@
-// Mascota Virtual - Bunny Cisne (Conejo con bufanda y abrigo estilo cuento de la princesa cisne)
-// Requiere bunnycis.png y bunnycis-error.png en la carpeta img/
+// Mascota Virtual - Bunny Caballero (Conejo con armadura estilo "El caballero de la armadura oxidada")
+// Requiere bunnyvi.png y bunnyvi-error.png en la carpeta img/
 
 (function() {
-    // Frases motivacionales y mágicas inspiradas en el cuento de la princesa cisne
-    const swanPhrases = [
-        "La magia del lago siempre protege a los corazones valientes.",
-        "A veces, un secreto puede ser la llave para romper cualquier hechizo.",
-        "La confianza es tan frágil como las alas de un cisne, cuídala.",
-        "El amor verdadero puede romper hasta el hechizo más oscuro.",
-        "No temas a la oscuridad, pues la luz del lago siempre regresa.",
-        "Un amigo leal es el mayor tesoro en un reino encantado.",
-        "Cada decisión puede cambiar el destino del reino.",
-        "La princesa Odette confía en quienes demuestran valor y bondad.",
-        "El lago esconde misterios, pero también esperanza.",
-        "Recuerda: incluso bajo un hechizo, el corazón sigue siendo libre.",
-        "La belleza de un cisne está en su libertad.",
-        "Un juramento sincero puede salvar más que una espada.",
-        "El coraje no siempre ruge, a veces susurra: 'inténtalo de nuevo'.",
-        "El verdadero poder está en la compasión y la honestidad.",
-        "No hay noche tan larga que no termine con el canto de un cisne.",
-        "El destino del reino depende de tus elecciones.",
-        "La princesa Cisne cree en los milagros... ¿y tú?",
-        "A veces, el mayor acto de amor es el sacrificio.",
-        "La magia más fuerte es la que nace del corazón.",
-        "Hoy es un buen día para confiar en la magia y en ti."
+    // Frases motivacionales inspiradas en "El caballero de la armadura oxidada" para niños
+    const knightPhrases = [
+        "A veces, quitarse la armadura es el primer paso para ser feliz.",
+        "No temas mostrar tus sentimientos, eso te hace más fuerte.",
+        "La verdadera valentía es mirar dentro de tu corazón.",
+        "Cada lágrima limpia un poco de tu armadura.",
+        "Ser tú mismo es el mayor acto de valentía.",
+        "No necesitas una armadura para ser un héroe.",
+        "Escucha a tu corazón, él sabe el camino.",
+        "La amistad y el amor son la mejor protección.",
+        "Pedir ayuda es de valientes, no de débiles.",
+        "El miedo se vence con pequeños pasos de valor.",
+        "La risa y la alegría hacen brillar hasta la armadura más oxidada.",
+        "No estás solo, siempre hay alguien dispuesto a ayudarte.",
+        "El camino más difícil es el que lleva a conocerse a uno mismo.",
+        "Cada día puedes aprender algo nuevo sobre ti.",
+        "La bondad es la mejor espada de un caballero.",
+        "No importa cuán pesada sea tu armadura, siempre puedes quitártela.",
+        "El perdón es la llave para liberar tu corazón.",
+        "Ser amable contigo mismo es tan importante como serlo con los demás.",
+        "La magia está en creer en ti mismo.",
+        "Hoy es un buen día para empezar a brillar desde adentro."
     ];
 
     // Mensaje de saludo inicial
-    const greeting = "¡Hola! ¿Listo para descubrir los secretos del lago y ayudar a la princesa Odette?";
+    const greeting = "¡Hola, noble caballero! ¿Listo para descubrir la magia que hay en tu corazón?";
 
-    // Imágenes de Bunny Cisne
+    // Imágenes de Bunny Caballero
     const bunnyImages = [
-        '/src/contenido/biblioteca/libro3/bunnycis.png'
+        '/src/contenido/biblioteca/libro5/bunnyvi.png'
     ];
-    const bunnyErrorImg = '/src/contenido/biblioteca/libro3/bunnycis-error.png';
+    const bunnyErrorImg = '/src/contenido/biblioteca/libro5/bunnyvi-error.png';
 
     // Función para crear la mascota visual
-    function createBunnyCisne() {
+    function createBunnyCaballero() {
         // Contenedor principal
         const bunnyContainer = document.createElement('div');
-        bunnyContainer.id = 'bunny-cisne-container';
+        bunnyContainer.id = 'bunny-caballero-container';
         bunnyContainer.style.cssText = `
             position: fixed;
             bottom: 18px;
@@ -49,10 +49,10 @@
             user-select: none;
         `;
 
-        // Imagen del conejo cisne
+        // Imagen del conejo caballero
         const bunnyImg = document.createElement('img');
         bunnyImg.src = bunnyImages[0];
-        bunnyImg.alt = 'Bunny Cisne';
+        bunnyImg.alt = 'Bunny Caballero';
         bunnyImg.style.cssText = `
             width: 260px;
             height: auto;
@@ -65,7 +65,7 @@
 
         // Globo de diálogo
         const speechBubble = document.createElement('div');
-        speechBubble.id = 'bunny-cisne-speech';
+        speechBubble.id = 'bunny-caballero-speech';
         speechBubble.style.cssText = `
             background: #fffbe7;
             border: 2px solid #bfae7c;
@@ -78,7 +78,7 @@
             line-height: 1.5;
             color: #3a2d13;
             position: absolute;
-            bottom: 300px;
+            bottom: 340px;
             right: 0;
             display: none;
             animation: fadeIn 0.3s ease-in-out;
@@ -111,7 +111,7 @@
                 50% { transform: translateY(-30px) scale(1.04) rotate(2deg);}
                 100% { transform: translateY(0) scale(1) rotate(-2deg);}
             }
-            #bunny-cisne-container img:active {
+            #bunny-caballero-container img:active {
                 filter: brightness(1.1) drop-shadow(0 0 8px #ffd700);
             }
         `;
@@ -135,19 +135,24 @@
     }
 
     // Mostrar frase aleatoria
-    function showRandomSwanPhrase(speechBubble) {
-        const idx = Math.floor(Math.random() * swanPhrases.length);
-        showPhrase(speechBubble, swanPhrases[idx]);
+    function showRandomKnightPhrase(speechBubble) {
+        const idx = Math.floor(Math.random() * knightPhrases.length);
+        showPhrase(speechBubble, knightPhrases[idx]);
+    }
+
+    // Mostrar frase de lectura (puedes personalizar si tienes frases especiales para la rotación)
+    function showReadingPhrase(speechBubble, bunnyImg, idx) {
+        showRandomKnightPhrase(speechBubble);
     }
 
     // --- Control de clicks rápidos y bloqueo ---
-    function initializeBunnyCisne() {
+    function initializeBunnyCaballero() {
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initializeBunnyCisne);
+            document.addEventListener('DOMContentLoaded', initializeBunnyCaballero);
             return;
         }
 
-        const { bunnyImg, speechBubble } = createBunnyCisne();
+        const { bunnyImg, speechBubble } = createBunnyCaballero();
 
         // Mostrar saludo al cargar la página
         setTimeout(() => {
@@ -162,16 +167,16 @@
         let bunnyIdx = 0;
 
         function startRotation() {
-            // Rotar imagen y frase motivacional cada 1 minuto (si hay más imágenes)
+            // Rotar imagen y frase motivacional de lectura cada 1 minuto
             rotationInterval = setInterval(() => {
                 bunnyIdx = (bunnyIdx + 1) % bunnyImages.length;
                 bunnyImg.src = bunnyImages[bunnyIdx];
-                showRandomSwanPhrase(speechBubble);
+                showReadingPhrase(speechBubble, bunnyImg, bunnyIdx);
             }, 60000);
 
             // Mostrar frases automáticamente cada 30 segundos
             phraseInterval = setInterval(() => {
-                showRandomSwanPhrase(speechBubble);
+                showRandomKnightPhrase(speechBubble);
             }, 30000);
         }
 
@@ -191,7 +196,7 @@
                 clickBlocked = true;
                 stopRotation();
 
-                // Cambiar la imagen a bunnycis-error.png
+                // Cambiar la imagen a bunnyvi-error.png
                 const previousSrc = bunnyImg.src;
                 bunnyImg.src = bunnyErrorImg;
                 showPhrase(speechBubble, "Me estás lastimando, ten cuidado", 10000);
@@ -208,7 +213,7 @@
                     startRotation();
                 }, 30000);
             } else {
-                showRandomSwanPhrase(speechBubble);
+                showRandomKnightPhrase(speechBubble);
             }
         });
 
@@ -217,5 +222,5 @@
     }
 
     // Inicializar
-    initializeBunnyCisne();
+    initializeBunnyCaballero();
 })();

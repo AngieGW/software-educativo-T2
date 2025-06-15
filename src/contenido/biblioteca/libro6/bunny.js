@@ -29,11 +29,17 @@
     // Mensaje de saludo inicial
     const greeting = "¡Hola, joven vikingo! ¿Listo para una aventura con dragones hoy?";
 
+    // Imágenes de Bunny Vikingo
+    const bunnyImages = [
+        '/src/contenido/biblioteca/libro6/bunnyvi.png'
+    ];
+    const bunnyErrorImg = '/src/contenido/biblioteca/libro6/bunnyvi-error.png';
+
     // Función para crear la mascota visual
-    function createBunnyPotter() {
+    function createBunnyVikingo() {
         // Contenedor principal
         const bunnyContainer = document.createElement('div');
-        bunnyContainer.id = 'bunny-potter-container';
+        bunnyContainer.id = 'bunny-vikingo-container';
         bunnyContainer.style.cssText = `
             position: fixed;
             bottom: 18px;
@@ -45,7 +51,7 @@
 
         // Imagen del conejo vikingo
         const bunnyImg = document.createElement('img');
-        bunnyImg.src = '/src/contenido/biblioteca/libro2/bunnyvi.png';
+        bunnyImg.src = bunnyImages[0];
         bunnyImg.alt = 'Bunny Vikingo';
         bunnyImg.style.cssText = `
             width: 260px;
@@ -59,7 +65,7 @@
 
         // Globo de diálogo
         const speechBubble = document.createElement('div');
-        speechBubble.id = 'bunny-potter-speech';
+        speechBubble.id = 'bunny-vikingo-speech';
         speechBubble.style.cssText = `
             background: #fffbe7;
             border: 2px solid #bfae7c;
@@ -105,7 +111,7 @@
                 50% { transform: translateY(-30px) scale(1.04) rotate(2deg);}
                 100% { transform: translateY(0) scale(1) rotate(-2deg);}
             }
-            #bunny-potter-container img:active {
+            #bunny-vikingo-container img:active {
                 filter: brightness(1.1) drop-shadow(0 0 8px #ffd700);
             }
         `;
@@ -135,13 +141,13 @@
     }
 
     // Inicializar la mascota
-    function initializeBunnyPotter() {
+    function initializeBunnyVikingo() {
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initializeBunnyPotter);
+            document.addEventListener('DOMContentLoaded', initializeBunnyVikingo);
             return;
         }
 
-        const { bunnyImg, speechBubble } = createBunnyPotter();
+        const { bunnyImg, speechBubble } = createBunnyVikingo();
 
         // Mostrar saludo al cargar la página
         setTimeout(() => {
@@ -160,5 +166,5 @@
     }
 
     // Inicializar
-    initializeBunnyPotter();
+    initializeBunnyVikingo();
 })();

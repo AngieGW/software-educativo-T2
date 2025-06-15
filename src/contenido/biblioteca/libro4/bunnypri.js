@@ -1,5 +1,5 @@
 // Mascota Virtual - Bunny Principito (Conejo con bufanda y abrigo estilo Principito)
-// Requiere bunnypri.png (la imagen proporcionada) en la carpeta img/
+// Requiere bunnypri.png y bunnypri-error.png en la carpeta img/
 
 (function() {
     // Frases inspiradas en El Principito
@@ -29,11 +29,17 @@
     // Mensaje de saludo inicial
     const greeting = "¡Hola, pequeño explorador! ¿Listo para descubrir lo invisible junto al Principito?";
 
+    // Imágenes de Bunny Principito
+    const bunnyImages = [
+        '/src/contenido/biblioteca/libro4/bunnypri.png'
+    ];
+    const bunnyErrorImg = '/src/contenido/biblioteca/libro4/bunnypri-error.png';
+
     // Función para crear la mascota visual
-    function createBunnyPotter() {
+    function createBunnyPrincipito() {
         // Contenedor principal
         const bunnyContainer = document.createElement('div');
-        bunnyContainer.id = 'bunny-potter-container';
+        bunnyContainer.id = 'bunny-principito-container';
         bunnyContainer.style.cssText = `
             position: fixed;
             bottom: 18px;
@@ -45,7 +51,7 @@
 
         // Imagen del conejo principito
         const bunnyImg = document.createElement('img');
-        bunnyImg.src = '/src/contenido/biblioteca/libro4/bunnyprin.png';
+        bunnyImg.src = bunnyImages[0];
         bunnyImg.alt = 'Bunny Principito';
         bunnyImg.style.cssText = `
             width: 260px;
@@ -59,7 +65,7 @@
 
         // Globo de diálogo
         const speechBubble = document.createElement('div');
-        speechBubble.id = 'bunny-potter-speech';
+        speechBubble.id = 'bunny-principito-speech';
         speechBubble.style.cssText = `
             background: #fffbe7;
             border: 2px solid #bfae7c;
@@ -105,7 +111,7 @@
                 50% { transform: translateY(-30px) scale(1.04) rotate(2deg);}
                 100% { transform: translateY(0) scale(1) rotate(-2deg);}
             }
-            #bunny-potter-container img:active {
+            #bunny-principito-container img:active {
                 filter: brightness(1.1) drop-shadow(0 0 8px #ffd700);
             }
         `;
@@ -120,67 +126,100 @@
     }
 
     // Mostrar frase en el globo
-    function showPhrase(speechBubble, phrase) {
+    function showPhrase(speechBubble, phrase, duration = 6000) {
         speechBubble.textContent = phrase;
         speechBubble.style.display = 'block';
         setTimeout(() => {
             speechBubble.style.display = 'none';
-        }, 6000);
+        }, duration);
+    }
+
+    // Mostrar frase de lectura (puedes personalizar si tienes frases especiales para la rotación)
+    function showReadingPhrase(speechBubble, bunnyImg, idx) {
+        showRandomPrincipitoPhrase(speechBubble);
     }
 
     // Mostrar frase aleatoria
-    function showRandomPrincipitoPhrase(speechBubble) {
-        const idx = Math.floor(Math.random() * principitoPhrases.length);
-        showPhrase(speechBubble, principitoPhrases[idx]);
+    function showRandomPhrase(speechBubble, bunnyImg) {
+        showRandomPrincipitoPhrase(speechBubble);
     }
 
-    // Inicializar la mascota
-    function initializeBunnyPotter() {
+    // --- Control de clicks rápidos y bloqueo ---
+    function initializeBunnyPrincipito() {
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initializeBunnyPotter);
+            document.addEventListener('DOMContentLoaded', initializeBunnyPrincipito);
             return;
         }
 
-        const { bunnyImg, speechBubble } = createBunnyPotter();
+        const { bunnyImg, speechBubble } = createBunnyPrincipito();
 
         // Mostrar saludo al cargar la página
         setTimeout(() => {
-            showPhrase(speechBubble, greeting);
+            showPhrase(speechBubble, greeting, 6000);
         }, 800);
 
-        // --- Control de clicks para advertencia ---
-        let clickTimestamps = [];
-        let warningTimeout = null;
+        // --- Control de clicks rápidos y bloqueo ---
+        let clickTimes = [];
+        let clickBlocked = false;
+        let rotationInterval = null;
+        let phraseInterval = null;
+        let bunnyIdx = 0;
+
+        function startRotation() {
+            // Rotar imagen y frase motivacional de lectura cada 1 minuto
+            rotationInterval = setInterval(() => {
+                bunnyIdx = (bunnyIdx + 1) % bunnyImages.length;
+                bunnyImg.src = bunnyImages[bunnyIdx];
+                showReadingPhrase(speechBubble, bunnyImg, bunnyIdx);
+            }, 60000);
+
+            // Mostrar frases automáticamente cada 30 segundos
+            phraseInterval = setInterval(() => {
+                showRandomPhrase(speechBubble, bunnyImg);
+            }, 30000);
+        }
+
+        function stopRotation() {
+            clearInterval(rotationInterval);
+            clearInterval(phraseInterval);
+        }
 
         bunnyImg.addEventListener('click', function() {
+            if (clickBlocked) return;
+
             const now = Date.now();
-            // Eliminar clicks fuera de la ventana de 10 segundos
-            clickTimestamps = clickTimestamps.filter(ts => now - ts < 10000);
-            clickTimestamps.push(now);
+            clickTimes = clickTimes.filter(ts => now - ts < 10000);
+            clickTimes.push(now);
 
-            // Si ya está mostrando advertencia, ignorar clicks
-            if (warningTimeout) return;
+            if (clickTimes.length >= 5) {
+                clickBlocked = true;
+                stopRotation();
 
-            if (clickTimestamps.length >= 5) {
-                showPhrase(speechBubble, "me estas lastimando");
-                warningTimeout = setTimeout(() => {
-                    speechBubble.style.display = 'none';
-                    warningTimeout = null;
-                }, 10000); // Mostrar advertencia por 10 segundos
-                clickTimestamps = [];
+                // Cambiar la imagen a bunnypri-error.png
+                const previousSrc = bunnyImg.src;
+                bunnyImg.src = bunnyErrorImg;
+                showPhrase(speechBubble, "Me estás lastimando, ten cuidado", 10000);
+                clickTimes = [];
+
+                // Volver a la imagen anterior después de 10 segundos
+                setTimeout(() => {
+                    bunnyImg.src = previousSrc;
+                }, 10000);
+
+                // Desbloquear clicks y reanudar rotación después de 30 segundos
+                setTimeout(() => {
+                    clickBlocked = false;
+                    startRotation();
+                }, 30000);
             } else {
-                showRandomPrincipitoPhrase(speechBubble);
+                showRandomPhrase(speechBubble, bunnyImg);
             }
         });
 
-        // Mostrar frases automáticas cada 30 segundos
-        setInterval(() => {
-            if (!warningTimeout) {
-                showRandomPrincipitoPhrase(speechBubble);
-            }
-        }, 30000);
+        // Iniciar frases automáticas y rotación
+        startRotation();
     }
 
     // Inicializar
-    initializeBunnyPotter();
+    initializeBunnyPrincipito();
 })();
