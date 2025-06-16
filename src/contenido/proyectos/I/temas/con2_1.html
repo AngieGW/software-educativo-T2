@@ -44,15 +44,9 @@
 
             <!-- Área de contenido -->
             <div class="content-area">
-                <h2 id="titulo-editable">Título</h2>
+                <h2 id="titulo-editable"></h2>
                 <div id="texto-editable" class="text-content">
-                    <p>Texto definición y demás información con respecto al contenido.</p>
-                    <p>Texto definición y demás información con respecto al contenido.</p>
-                    <p>Texto definición y demás información con respecto al contenido.</p>
-                    <p>Texto definición y demás información con respecto al contenido.</p>
-                    <p>Texto definición y demás información con respecto al contenido.</p>
-                    <p>Texto definición y demás información con respecto al contenido.</p>
-                    <p>Texto definición y demás información con respecto al contenido.</p>
+                    <p></p>
                 </div>
 
                 <!-- Navegación de contenido -->
@@ -68,30 +62,6 @@
         </main>
     </div>
 
-    <script>
-        // Script para hacer editables los campos de título y contenido
-        document.addEventListener('DOMContentLoaded', function() {
-            const tituloEditable = document.getElementById('titulo-editable');
-            const textoEditable = document.getElementById('texto-editable');
-            
-            tituloEditable.addEventListener('click', function() {
-                this.contentEditable = true;
-                this.focus();
-            });
-            
-            textoEditable.addEventListener('click', function() {
-                this.contentEditable = true;
-                this.focus();
-            });
-            
-            // Desactivar edición al hacer clic fuera
-            document.addEventListener('click', function(event) {
-                if (event.target !== tituloEditable && event.target !== textoEditable) {
-                    tituloEditable.contentEditable = false;
-                    textoEditable.contentEditable = false;
-                }
-            });
-        });
-    </script>
+<script type="module" src="con2.js"></script>
 </body>
 </html>

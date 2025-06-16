@@ -17,7 +17,7 @@ function guardarActual() {
     cuadros[actual] = editorArea.innerHTML;
 }
 
-// Cambiar de cuadro
+// Cambiar de cuadro (de uno en uno, nunca salta ni repite)
 function cambiarCuadro(dir) {
     guardarActual();
     actual += dir;
@@ -32,6 +32,7 @@ function mostrarCuadro() {
     contador.textContent = (actual + 1) + ' / ' + totalCuadros;
 }
 
+// Tooltip para botones
 function mostrarTooltip(btn, texto) {
     const tooltip = document.getElementById('tooltip-editor');
     tooltip.textContent = texto;
@@ -42,37 +43,22 @@ function ocultarTooltip() {
     tooltip.style.display = 'none';
 }
 
+// Formato negrita
 function aplicarNegrita() {
     document.execCommand('bold', false, null);
     editorArea.focus();
 }
+// Formato cursiva
 function aplicarCursiva() {
     document.execCommand('italic', false, null);
     editorArea.focus();
 }
-
-// Mostrar selector de color para resaltado
-function mostrarColorResaltado() {
-    document.getElementById('colorResaltado').style.display = 'inline-block';
-    document.getElementById('colorResaltado').focus();
-}
-function aplicarResaltadoColor(color) {
-    document.execCommand('hiliteColor', false, color);
-    document.getElementById('colorResaltado').style.display = 'none';
+// Resaltado celeste
+function aplicarResaltadoCeleste() {
+    document.execCommand('hiliteColor', false, '#87cefa');
     editorArea.focus();
 }
-
-// Mostrar selector de color para texto
-function mostrarColorTexto() {
-    document.getElementById('colorTexto').style.display = 'inline-block';
-    document.getElementById('colorTexto').focus();
-}
-function aplicarColorTexto(color) {
-    document.execCommand('foreColor', false, color);
-    document.getElementById('colorTexto').style.display = 'none';
-    editorArea.focus();
-}
-
+// Emoji
 function agregarEmoji() {
     const emoji = prompt('Escribe o pega el emoji que deseas agregar:', '😊');
     if (emoji) {
@@ -93,16 +79,11 @@ document.getElementById('next-cuadro').addEventListener('click', () => cambiarCu
 // Inicializar
 mostrarCuadro();
 
-// Envío del formulario
-document.getElementById('contenidoForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    guardarActual();
-    // Al menos un cuadro debe estar lleno
-    const algunoLleno = cuadros.some(c => c.replace(/<[^>]*>/g, '').trim() !== '');
-    if (!algunoLleno) {
-        formMsg.innerHTML = '<div class="error-msg">Debe llenar al menos un cuadro de contenido.</div>';
-        return;
-    }
-    // Aquí puedes enviar los datos (titulo y cuadros) al backend o procesar como necesites
-    formMsg.innerHTML = '<div class="success-msg">¡Contenido enviado correctamente!</div>';
-});
+// Exponer funciones para los botones del toolbar
+window.aplicarNegrita = aplicarNegrita;
+window.aplicarCursiva = aplicarCursiva;
+window.aplicarResaltadoCeleste = aplicarResaltadoCeleste;
+window.agregarEmoji = agregarEmoji;
+window.mostrarTooltip = mostrarTooltip;
+window.ocultarTooltip = ocultarTooltip;
+window.cambiarCuadro = cambiarCuadro;
