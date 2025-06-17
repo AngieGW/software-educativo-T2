@@ -162,17 +162,20 @@ document.addEventListener('DOMContentLoaded', function() {
         // Final A: Regreso al asteroide
         {
             title: "Final: El Regreso",
-            content: "La serpiente le ayuda a regresar. El Principito se entiende a sí mismo y a su misión: cuidar y amar profundamente."
+            content: "La serpiente le ayuda a regresar. El Principito se entiende a sí mismo y a su misión: cuidar y amar profundamente.",
+            isFinal: true
         },
         // Final B: Quedarse en la Tierra
         {
             title: "Final: Nuevas Amistades",
-            content: "El Principito elige vivir en la Tierra, aprendiendo de las amistades que ha forjado. Su perspectiva cambia y se siente más en casa entre los humanos."
+            content: "El Principito elige vivir en la Tierra, aprendiendo de las amistades que ha forjado. Su perspectiva cambia y se siente más en casa entre los humanos.",
+            isFinal: true
         },
         // Epílogo
         {
             title: "Epílogo: El Legado del Principito",
-            content: "Y así, querido amigo invisible, el Principito ha recorrido un camino lleno de lecciones, experiencias y emoción. Recuerda que, al final, la verdadera riqueza reside en las conexiones que forjamos en nuestro viaje. Cada elección que hiciste reflejó tu propia esencia y te llevó a un final único. Como dijo el Principito, 'Lo esencial es invisible a los ojos', y cada uno ve diferente según la luz que lleve en su corazón.\n\nEl viaje del Principito continúa, y en tus decisiones reside el poder de cambiar su destino."
+            content: "Y así, querido amigo invisible, el Principito ha recorrido un camino lleno de lecciones, experiencias y emoción. Recuerda que, al final, la verdadera riqueza reside en las conexiones que forjamos en nuestro viaje. Cada elección que hiciste reflejó tu propia esencia y te llevó a un final único. Como dijo el Principito, 'Lo esencial es invisible a los ojos', y cada uno ve diferente según la luz que lleve en su corazón.\n\nEl viaje del Principito continúa, y en tus decisiones reside el poder de cambiar su destino.",
+            isFinal: true
         }
     ];
 
@@ -251,37 +254,35 @@ document.addEventListener('DOMContentLoaded', function() {
         const page = pages[pageIndex];
         pageTitle.textContent = page.title || "Historia Interactiva";
 
-        // Ocultar controles de navegación si hay elecciones
-        if (page.choices && page.choices.length > 0) {
-            navigationControls.style.display = 'none';
-        } else {
-            navigationControls.style.display = 'flex';
-        }
+        // Ocultar controles de navegación siempre (no mostrar flechas)
+        navigationControls.style.display = 'none';
 
         // Iniciar animación de texto
         typeWriter(page.content, 0, function() {
             if (page.choices && page.choices.length > 0) {
                 const choiceButtons = createChoiceButtons(page.choices);
                 typingText.parentNode.appendChild(choiceButtons);
-            }
-        });
-    }
-
-    // Botones de navegación
-    const prevButton = document.querySelector('.prev-button');
-    const nextButton = document.querySelector('.next-button');
-
-    if (prevButton && nextButton) {
-        prevButton.addEventListener('click', function() {
-            if (currentPage > 0) {
-                currentPage--;
-                loadPage(currentPage);
-            }
-        });
-        nextButton.addEventListener('click', function() {
-            if (currentPage < pages.length - 1) {
-                currentPage++;
-                loadPage(currentPage);
+            } else if (page.isFinal) {
+                // Mostrar solo el final correspondiente y el botón de finalizar
+                const finishBtn = document.createElement('button');
+                finishBtn.textContent = 'Finalizar';
+                finishBtn.className = 'choice-button';
+                finishBtn.style.cssText = `
+                    margin-top: 24px;
+                    padding: 12px 20px;
+                    background: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%);
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    font-size: 16px;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                `;
+                finishBtn.onclick = function() {
+                    window.location.href = '../../biblioteca.html';
+                };
+                typingText.parentNode.appendChild(finishBtn);
             }
         });
     }

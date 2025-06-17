@@ -1,45 +1,45 @@
-// Mascota Virtual - Bunny Vikingo (Conejo con bufanda y abrigo estilo vikingo/entrenador de dragones)
-// Requiere bunnyvi.png (la imagen proporcionada) en la carpeta img/
+// Mascota Virtual - Bunny Caballero (Conejo con armadura estilo "El caballero de la armadura oxidada")
+// Requiere bunnyvi.png y bunnyvi-error.png en la carpeta img/
 
 (function() {
-    // Frases motivacionales de vikingos y entrenar dragones
-    const vikingPhrases = [
-        "¡Un verdadero vikingo escucha a su corazón y respeta a los dragones! 🐉",
-        "La amistad con un dragón puede cambiar el destino de un pueblo.",
-        "No todos los héroes empuñan hachas, algunos extienden la mano a un dragón.",
-        "La valentía no es luchar, es atreverse a comprender lo desconocido.",
-        "¡Hoy es un gran día para aprender a volar más alto!",
-        "Un vikingo sabio sabe que la fuerza y la compasión pueden ir de la mano.",
-        "Entrenar a un dragón requiere paciencia, respeto y mucho pescado.",
-        "¡No temas lo diferente, puede ser tu mayor aliado!",
-        "La verdadera fuerza de Berk está en la unión entre vikingos y dragones.",
-        "¡Recuerda! Un dragón amigo es mejor que mil enemigos.",
-        "El coraje es escuchar a tu dragón interior.",
-        "¡Juntos, vikingos y dragones, somos imparables!",
-        "La aventura comienza cuando decides confiar.",
-        "Un líder no manda, inspira a otros a volar con él.",
-        "¡Hoy puedes descubrir un nuevo amigo con alas!",
-        "La historia de Berk la escriben quienes se atreven a cambiar.",
-        "No hay viento en contra para quien sabe volar con su dragón.",
-        "¡La curiosidad es el primer paso para entrenar a tu dragón!",
-        "Un dragón fiel vale más que un ejército de guerreros.",
-        "¡Nunca subestimes el poder de una amistad inesperada!"
+    // Frases motivacionales inspiradas en "El caballero de la armadura oxidada" para niños
+    const knightPhrases = [
+        "A veces, quitarse la armadura es el primer paso para ser feliz.",
+        "No temas mostrar tus sentimientos, eso te hace más fuerte.",
+        "La verdadera valentía es mirar dentro de tu corazón.",
+        "Cada lágrima limpia un poco de tu armadura.",
+        "Ser tú mismo es el mayor acto de valentía.",
+        "No necesitas una armadura para ser un héroe.",
+        "Escucha a tu corazón, él sabe el camino.",
+        "La amistad y el amor son la mejor protección.",
+        "Pedir ayuda es de valientes, no de débiles.",
+        "El miedo se vence con pequeños pasos de valor.",
+        "La risa y la alegría hacen brillar hasta la armadura más oxidada.",
+        "No estás solo, siempre hay alguien dispuesto a ayudarte.",
+        "El camino más difícil es el que lleva a conocerse a uno mismo.",
+        "Cada día puedes aprender algo nuevo sobre ti.",
+        "La bondad es la mejor espada de un caballero.",
+        "No importa cuán pesada sea tu armadura, siempre puedes quitártela.",
+        "El perdón es la llave para liberar tu corazón.",
+        "Ser amable contigo mismo es tan importante como serlo con los demás.",
+        "La magia está en creer en ti mismo.",
+        "Hoy es un buen día para empezar a brillar desde adentro."
     ];
 
     // Mensaje de saludo inicial
-    const greeting = "¡Hola, joven vikingo! ¿Listo para una aventura con dragones hoy?";
+    const greeting = "¡Hola, noble caballero! ¿Listo para descubrir la magia que hay en tu corazón?";
 
-    // Imágenes de Bunny Vikingo
+    // Imágenes de Bunny Caballero
     const bunnyImages = [
-        '/src/contenido/biblioteca/libro6/bunnyvi.png'
+        '/src/contenido/biblioteca/libro6/bunnycas.png'
     ];
-    const bunnyErrorImg = '/src/contenido/biblioteca/libro6/bunnyvi-error.png';
+    const bunnyErrorImg = '/src/img/bunny-error.png';
 
     // Función para crear la mascota visual
-    function createBunnyVikingo() {
+    function createBunnyCaballero() {
         // Contenedor principal
         const bunnyContainer = document.createElement('div');
-        bunnyContainer.id = 'bunny-vikingo-container';
+        bunnyContainer.id = 'bunny-caballero-container';
         bunnyContainer.style.cssText = `
             position: fixed;
             bottom: 18px;
@@ -49,12 +49,12 @@
             user-select: none;
         `;
 
-        // Imagen del conejo vikingo
+        // Imagen del conejo caballero
         const bunnyImg = document.createElement('img');
         bunnyImg.src = bunnyImages[0];
-        bunnyImg.alt = 'Bunny Vikingo';
+        bunnyImg.alt = 'Bunny Caballero';
         bunnyImg.style.cssText = `
-            width: 260px;
+            width: 160px;
             height: auto;
             display: block;
             filter: drop-shadow(0 4px 12px rgba(0,0,0,0.18));
@@ -65,7 +65,7 @@
 
         // Globo de diálogo
         const speechBubble = document.createElement('div');
-        speechBubble.id = 'bunny-vikingo-speech';
+        speechBubble.id = 'bunny-caballero-speech';
         speechBubble.style.cssText = `
             background: #fffbe7;
             border: 2px solid #bfae7c;
@@ -111,7 +111,7 @@
                 50% { transform: translateY(-30px) scale(1.04) rotate(2deg);}
                 100% { transform: translateY(0) scale(1) rotate(-2deg);}
             }
-            #bunny-vikingo-container img:active {
+            #bunny-caballero-container img:active {
                 filter: brightness(1.1) drop-shadow(0 0 8px #ffd700);
             }
         `;
@@ -126,45 +126,101 @@
     }
 
     // Mostrar frase en el globo
-    function showPhrase(speechBubble, phrase) {
+    function showPhrase(speechBubble, phrase, duration = 6000) {
         speechBubble.textContent = phrase;
         speechBubble.style.display = 'block';
         setTimeout(() => {
             speechBubble.style.display = 'none';
-        }, 6000);
+        }, duration);
     }
 
     // Mostrar frase aleatoria
-    function showRandomVikingPhrase(speechBubble) {
-        const idx = Math.floor(Math.random() * vikingPhrases.length);
-        showPhrase(speechBubble, vikingPhrases[idx]);
+    function showRandomKnightPhrase(speechBubble) {
+        const idx = Math.floor(Math.random() * knightPhrases.length);
+        showPhrase(speechBubble, knightPhrases[idx]);
     }
 
-    // Inicializar la mascota
-    function initializeBunnyVikingo() {
+    // Mostrar frase de lectura (puedes personalizar si tienes frases especiales para la rotación)
+    function showReadingPhrase(speechBubble, bunnyImg, idx) {
+        showRandomKnightPhrase(speechBubble);
+    }
+
+    // --- Control de clicks rápidos y bloqueo ---
+    function initializeBunnyCaballero() {
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initializeBunnyVikingo);
+            document.addEventListener('DOMContentLoaded', initializeBunnyCaballero);
             return;
         }
 
-        const { bunnyImg, speechBubble } = createBunnyVikingo();
+        const { bunnyImg, speechBubble } = createBunnyCaballero();
 
         // Mostrar saludo al cargar la página
         setTimeout(() => {
-            showPhrase(speechBubble, greeting);
+            showPhrase(speechBubble, greeting, 6000);
         }, 800);
 
-        // Mostrar frase aleatoria al hacer click en el conejo
+        // --- Control de clicks rápidos y bloqueo ---
+        let clickTimes = [];
+        let clickBlocked = false;
+        let rotationInterval = null;
+        let phraseInterval = null;
+        let bunnyIdx = 0;
+
+        function startRotation() {
+            // Rotar imagen y frase motivacional de lectura cada 1 minuto
+            rotationInterval = setInterval(() => {
+                bunnyIdx = (bunnyIdx + 1) % bunnyImages.length;
+                bunnyImg.src = bunnyImages[bunnyIdx];
+                showReadingPhrase(speechBubble, bunnyImg, bunnyIdx);
+            }, 60000);
+
+            // Mostrar frases automáticamente cada 30 segundos
+            phraseInterval = setInterval(() => {
+                showRandomKnightPhrase(speechBubble);
+            }, 30000);
+        }
+
+        function stopRotation() {
+            clearInterval(rotationInterval);
+            clearInterval(phraseInterval);
+        }
+
         bunnyImg.addEventListener('click', function() {
-            showRandomVikingPhrase(speechBubble);
+            if (clickBlocked) return;
+
+            const now = Date.now();
+            clickTimes = clickTimes.filter(ts => now - ts < 10000);
+            clickTimes.push(now);
+
+            if (clickTimes.length >= 5) {
+                clickBlocked = true;
+                stopRotation();
+
+                // Cambiar la imagen a bunnyvi-error.png
+                const previousSrc = bunnyImg.src;
+                bunnyImg.src = bunnyErrorImg;
+                showPhrase(speechBubble, "Me estás lastimando, ten cuidado", 15000);
+                clickTimes = [];
+
+                // Volver a la imagen anterior después de 60 segundos
+                setTimeout(() => {
+                    bunnyImg.src = previousSrc;
+                }, 60000);
+
+                // Desbloquear clicks y reanudar rotación después de 30 segundos
+                setTimeout(() => {
+                    clickBlocked = false;
+                    startRotation();
+                }, 30000);
+            } else {
+                showRandomKnightPhrase(speechBubble);
+            }
         });
 
-        // Mostrar frases automáticas cada 30 segundos
-        setInterval(() => {
-            showRandomVikingPhrase(speechBubble);
-        }, 30000);
+        // Iniciar frases automáticas y rotación
+        startRotation();
     }
 
     // Inicializar
-    initializeBunnyVikingo();
+    initializeBunnyCaballero();
 })();

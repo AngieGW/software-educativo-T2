@@ -149,22 +149,26 @@ document.addEventListener('DOMContentLoaded', function() {
         // Final 1: Amor Verdadero
         {
             title: "Final 1: Amor Verdadero",
-            content: "Confiesas tu amor por Odette antes de la batalla final. Este acto de amor verdadero rompe el hechizo. Rothbart, debilitado, pierde su poder.\n\nCon la ayuda del príncipe Derek, logras derrotarlo. Odette queda libre. El reino celebra tu valentía y el vínculo que has forjado con la princesa."
+            content: "Confiesas tu amor por Odette antes de la batalla final. Este acto de amor verdadero rompe el hechizo. Rothbart, debilitado, pierde su poder.\n\nCon la ayuda del príncipe Derek, logras derrotarlo. Odette queda libre. El reino celebra tu valentía y el vínculo que has forjado con la princesa.",
+            isFinal: true
         },
         // Final 2: Sacrificio Heroico
         {
             title: "Final 2: Sacrificio Heroico",
-            content: "Durante la batalla, comprendes que solo un sacrificio puede salvar a Odette. Te enfrentas a Rothbart, sabiendo que esto podría costarte la vida.\n\nTu valentía inspira a los demás. Aunque pierdes la vida, el hechizo se rompe. Odette llora tu pérdida, pero tu sacrificio será recordado por siempre."
+            content: "Durante la batalla, comprendes que solo un sacrificio puede salvar a Odette. Te enfrentas a Rothbart, sabiendo que esto podría costarte la vida.\n\nTu valentía inspira a los demás. Aunque pierdes la vida, el hechizo se rompe. Odette llora tu pérdida, pero tu sacrificio será recordado por siempre.",
+            isFinal: true
         },
         // D1/D2: Ayudar a Derek a enfrentar a Rothbart (Final 3)
         {
             title: "Final 3: Traición y Redención",
-            content: "Si elegiste informar al rey sin el consentimiento de Odette, ella pierde la confianza en ti. Sin embargo, encuentras una forma de redimirte.\n\nAyudas al príncipe Derek a enfrentar a Rothbart. Aunque el hechizo se rompe, tu relación con Odette queda marcada por la desconfianza. El reino está a salvo, pero el amor verdadero no florece."
+            content: "Si elegiste informar al rey sin el consentimiento de Odette, ella pierde la confianza en ti. Sin embargo, encuentras una forma de redimirte.\n\nAyudas al príncipe Derek a enfrentar a Rothbart. Aunque el hechizo se rompe, tu relación con Odette queda marcada por la desconfianza. El reino está a salvo, pero el amor verdadero no florece.",
+            isFinal: true
         },
         // Final 4: Derrota
         {
             title: "Final 4: Derrota",
-            content: "Si tomaste decisiones imprudentes o no lograste unir suficientes aliados, Rothbart gana. Odette permanece bajo su hechizo. El reino cae en la oscuridad. Tu historia termina como una advertencia de que cada decisión cuenta."
+            content: "Si tomaste decisiones imprudentes o no lograste unir suficientes aliados, Rothbart gana. Odette permanece bajo su hechizo. El reino cae en la oscuridad. Tu historia termina como una advertencia de que cada decisión cuenta.",
+            isFinal: true
         }
     ];
 
@@ -243,37 +247,35 @@ document.addEventListener('DOMContentLoaded', function() {
         const page = pages[pageIndex];
         pageTitle.textContent = page.title || "Historia Interactiva";
 
-        // Ocultar controles de navegación si hay elecciones
-        if (page.choices && page.choices.length > 0) {
-            navigationControls.style.display = 'none';
-        } else {
-            navigationControls.style.display = 'flex';
-        }
+        // Ocultar controles de navegación siempre (no mostrar flechas)
+        navigationControls.style.display = 'none';
 
         // Iniciar animación de texto
         typeWriter(page.content, 0, function() {
             if (page.choices && page.choices.length > 0) {
                 const choiceButtons = createChoiceButtons(page.choices);
                 typingText.parentNode.appendChild(choiceButtons);
-            }
-        });
-    }
-
-    // Botones de navegación
-    const prevButton = document.querySelector('.prev-button');
-    const nextButton = document.querySelector('.next-button');
-
-    if (prevButton && nextButton) {
-        prevButton.addEventListener('click', function() {
-            if (currentPage > 0) {
-                currentPage--;
-                loadPage(currentPage);
-            }
-        });
-        nextButton.addEventListener('click', function() {
-            if (currentPage < pages.length - 1) {
-                currentPage++;
-                loadPage(currentPage);
+            } else if (page.isFinal) {
+                // Mostrar solo el final correspondiente y el botón de finalizar
+                const finishBtn = document.createElement('button');
+                finishBtn.textContent = 'Finalizar';
+                finishBtn.className = 'choice-button';
+                finishBtn.style.cssText = `
+                    margin-top: 24px;
+                    padding: 12px 20px;
+                    background: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%);
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    font-size: 16px;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                `;
+                finishBtn.onclick = function() {
+                    window.location.href = '../../biblioteca.html';
+                };
+                typingText.parentNode.appendChild(finishBtn);
             }
         });
     }

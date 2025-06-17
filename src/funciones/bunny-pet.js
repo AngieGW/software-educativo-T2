@@ -32,7 +32,7 @@
 
     // Imágenes del conejo
     const bunnyImages = [
-        '/src/img/bunny1.png',
+        '/src/img/bunny-original.png',
         '/src/img/bunny2.png',
         '/src/img/bunny3.png'
     ];

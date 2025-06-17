@@ -33,7 +33,7 @@
     const bunnyImages = [
         '/src/contenido/biblioteca/libro1/img/bunnypotter.png'
     ];
-    const bunnyErrorImg = '/src/contenido/biblioteca/libro1/img/bunnypotter-error.png';
+    const bunnyErrorImg = '/src/img/bunny-error.png';
 
     // Función para crear la mascota visual
     function createBunnyPotter() {
@@ -194,13 +194,13 @@
                 // Cambiar la imagen a bunny-potter-error.png
                 const previousSrc = bunnyImg.src;
                 bunnyImg.src = bunnyErrorImg;
-                showPhrase(speechBubble, "Me estás lastimando, ten cuidado", 10000);
+                showPhrase(speechBubble, "Me estás lastimando, ten cuidado", 15000);
                 clickTimes = [];
 
-                // Volver a la imagen anterior después de 10 segundos
+                // Volver a la imagen anterior después de 60 segundos
                 setTimeout(() => {
                     bunnyImg.src = previousSrc;
-                }, 10000);
+                }, 60000);
 
                 // Desbloquear clicks y reanudar rotación después de 30 segundos
                 setTimeout(() => {

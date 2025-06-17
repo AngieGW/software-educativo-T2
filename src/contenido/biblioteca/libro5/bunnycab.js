@@ -31,9 +31,9 @@
 
     // Imágenes de Bunny Caballero
     const bunnyImages = [
-        '/src/contenido/biblioteca/libro5/bunnyvi.png'
+        '/src/contenido/biblioteca/libro5/bunnycab.png'
     ];
-    const bunnyErrorImg = '/src/contenido/biblioteca/libro5/bunnyvi-error.png';
+    const bunnyErrorImg = '/src/img/bunny-error.png';
 
     // Función para crear la mascota visual
     function createBunnyCaballero() {
@@ -199,13 +199,13 @@
                 // Cambiar la imagen a bunnyvi-error.png
                 const previousSrc = bunnyImg.src;
                 bunnyImg.src = bunnyErrorImg;
-                showPhrase(speechBubble, "Me estás lastimando, ten cuidado", 10000);
+                showPhrase(speechBubble, "Me estás lastimando, ten cuidado", 15000);
                 clickTimes = [];
 
-                // Volver a la imagen anterior después de 10 segundos
+                // Volver a la imagen anterior después de 60 segundos
                 setTimeout(() => {
                     bunnyImg.src = previousSrc;
-                }, 10000);
+                }, 60000);
 
                 // Desbloquear clicks y reanudar rotación después de 30 segundos
                 setTimeout(() => {

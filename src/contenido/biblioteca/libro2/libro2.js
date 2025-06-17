@@ -215,37 +215,35 @@ document.addEventListener('DOMContentLoaded', function() {
         const page = pages[pageIndex];
         pageTitle.textContent = page.title || "Historia Interactiva";
 
-        // Ocultar controles de navegación si hay elecciones
-        if (page.choices && page.choices.length > 0) {
-            navigationControls.style.display = 'none';
-        } else {
-            navigationControls.style.display = 'flex';
-        }
+        // Ocultar controles de navegación siempre (no mostrar flechas)
+        navigationControls.style.display = 'none';
 
         // Iniciar animación de texto
         typeWriter(page.content, 0, function() {
             if (page.choices && page.choices.length > 0) {
                 const choiceButtons = createChoiceButtons(page.choices);
                 typingText.parentNode.appendChild(choiceButtons);
-            }
-        });
-    }
-
-    // Botones de navegación
-    const prevButton = document.querySelector('.prev-button');
-    const nextButton = document.querySelector('.next-button');
-
-    if (prevButton && nextButton) {
-        prevButton.addEventListener('click', function() {
-            if (currentPage > 0) {
-                currentPage--;
-                loadPage(currentPage);
-            }
-        });
-        nextButton.addEventListener('click', function() {
-            if (currentPage < pages.length - 1) {
-                currentPage++;
-                loadPage(currentPage);
+            } else if (page.title && page.title.startsWith('Final')) {
+                // Mostrar solo el final correspondiente y el botón de finalizar
+                const finishBtn = document.createElement('button');
+                finishBtn.textContent = 'Finalizar';
+                finishBtn.className = 'choice-button';
+                finishBtn.style.cssText = `
+                    margin-top: 24px;
+                    padding: 12px 20px;
+                    background: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%);
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    font-size: 16px;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                `;
+                finishBtn.onclick = function() {
+                    window.location.href = '../../biblioteca.html';
+                };
+                typingText.parentNode.appendChild(finishBtn);
             }
         });
     }
