@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio de Sesión</title>
-    <link rel="stylesheet" href="/src/estilos/confirmacion.css">
+    <link rel="stylesheet" href="confirmacion.css">
 </head>
 <body>
     <header class="cabecera">
@@ -95,9 +95,10 @@
                 </div>
                 <label for="credencial">Contraseña</label>
                 <div class="inicio-input">
-                    <input type="password" id="credential" name="credential" placeholder="Ingrese su clave..." required>
+                    <input type="text" id="credential" name="credential" placeholder="Ingrese su clave..." required>
                     <span class="iconos" id="mostrar-iconos">
-                        <!-- ...iconos de ojo existentes... -->
+                        <i class="fas fa-eye icono-eye-open" style="display: inherit;"></i>
+                        <i class="fas fa-eye-slash icono-eye-closed" style="display: none;"></i>
                     </span>
                 </div>
                 <button class="boton-ingresar" type="submit" id="loginButton">Ingresar</button>
@@ -105,4 +106,15 @@
             </form>
         </div>
     </div>
-    <script type="module" src="/Fontend/src/funciones/login.js"></script>
+    <script type="module" src="/src/login.js"></script>
+    <script>
+        // Obtener valores del formulario
+        const cedula = cedulaInput.value.trim();
+        const credential = credentialInput.value.trim();
+
+        // Enviar ambos datos como string (por ejemplo, para debug)
+        const datosComoString = `cedula: ${cedula}, credential: ${credential}`;
+        console.log(datosComoString);
+    </script>
+</body>
+</html>
