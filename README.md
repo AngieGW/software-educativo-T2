@@ -1,3 +1,8 @@
+# para iniciar el servidor:
+
+coloca en la terminal: npx http-server -p 3000
+
+
 # software-educativo-T2
 Esto es todo lo que tenemos hasta ahora, practicamente lo que te mostre en el video. De la parte del backend no tiene NADAAA porque no consigo como hacer que la base de datos conecte de ninguna manera.
 
