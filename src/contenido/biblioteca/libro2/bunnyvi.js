@@ -54,8 +54,8 @@
         bunnyImg.src = bunnyImages[0];
         bunnyImg.alt = 'Bunny Vikingo';
         bunnyImg.style.cssText = `
-            width: 200px;
-            height: auto;
+            width: 220px;
+            height: 220px;
             display: block;
             filter: drop-shadow(0 4px 12px rgba(0,0,0,0.18));
             animation: bunnyMove 2.5s infinite alternate;
@@ -78,8 +78,8 @@
             line-height: 1.5;
             color: #3a2d13;
             position: absolute;
-            bottom: 240px;
-            right: 0;
+            btop: 1.5rem;
+            left: -250px;
             display: none;
             animation: fadeIn 0.3s ease-in-out;
             font-family: 'Segoe UI', Arial, sans-serif;
