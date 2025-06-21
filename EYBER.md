@@ -1,5 +1,5 @@
 # TODO: Pulir esto para que sirva de indicaciones de como ejecutarlo como developer y agregarlo en el README
-## EJECUTA UN SERVIDOR
+## EJECUTA UN SERVIDOR SE DEBE INCLUIR REQUERIMIENTOS INICIALES instalar http-server
 yo tengo la carpeta backend (donde est la API) y la carpeta Frontend (donde esta esto)
 esas carpetas estando dentro de una carpeta que se llama proyecto
 
