@@ -41,7 +41,7 @@
                     href="/src/menu.html">Atras</a>
                 </div>
                 <h1 id="contenido-titulo">Biblioteca</h1>
-                <button class="logout-btn" onclick="window.location.href='/src/Index.html'">
+                <button class="logout-btn" onclick="cerrarSesionAdmin()">
                     <i class="fas fa-sign-out-alt"></i> Cerrar sesión
                 </button>
             </header>
@@ -90,6 +90,14 @@
                 </button>
             </div>
     </div>
-    <script src="src/funciones/bunny-pet.js" ></script>
+    <script src="/src/cerrar-sesion.js"></script>
+<script>
+if (!localStorage.getItem('adminToken')) {
+  var s = document.createElement('script');
+    s.src = '/src/funciones/bunny-pet.js';
+  document.head.appendChild(s);
+}
+</script>
+
 </body>
 </html>

@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Evaluaciones</title>
+    <link rel="stylesheet" href="/src/admin/stylo.css">
+    <style>
+      .filtros-eva {
+        margin-bottom: 1.5rem;
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+      }
+      .tabla-evaluaciones {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+      }
+      .tabla-evaluaciones th, .tabla-evaluaciones td {
+        padding: 0.8rem;
+        border-bottom: 1px solid #e6f5ea;
+        text-align: center;
+      }
+      .tabla-evaluaciones th {
+        background: linear-gradient(135deg, #2a8d4f, #34a85a);
+        color: #fff;
+      }
+      .acciones-eva {
+        display: flex;
+        gap: 0.4rem;
+        justify-content: center;
+        align-items: center;
+      }
+      .btn-accion {
+        padding: 0.4rem 1rem;
+        border-radius: 6px;
+        border: none;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        margin: 0;
+        transition: background 0.2s;
+        box-shadow: 0 1px 4px #2a8d4f11;
+        outline: none;
+      }
+      .btn-editar { background: #2a8d4f; color: #fff; }
+      .btn-editar:hover { background: #23713d; }
+      .btn-eliminar { background: #e74c3c; color: #fff; }
+      .btn-eliminar:hover { background: #c0392b; }
+      .sin-evaluaciones {
+        text-align: center;
+        color: #666;
+        font-style: italic;
+        padding: 2rem;
+        background: #f8fafb;
+        border-radius: 8px;
+        margin-top: 1rem;
+      }
+      /* Modal bonito */
+      .modal-bg {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(30, 40, 60, 0.55);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        animation: modalFadeIn 0.3s;
+      }
+      @keyframes modalFadeIn {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+      }
+      .form-crear-modal {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(30,40,60,0.18);
+        padding: 2.5rem 2rem 2rem 2rem;
+        min-width: 320px;
+        max-width: 420px;
+        width: 100%;
+        max-height: 80vh;
+        overflow-y: auto;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 1.1rem;
+        animation: modalFadeIn 0.4s;
+      }
+      .form-crear-modal h3 {
+        margin-top: 0;
+        margin-bottom: 1.2rem;
+        color: #219150;
+        font-size: 1.35rem;
+        text-align: center;
+        font-weight: 700;
+        letter-spacing: 1px;
+      }
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+      }
+      .form-crear-modal label {
+        font-weight: 600;
+        color: #2a8d4f;
+        font-size: 1rem;
+      }
+      .form-crear-modal input[type="text"],
+      .form-crear-modal input[type="number"],
+      .form-crear-modal select {
+        padding: 0.5rem 0.7rem;
+        border: 1.5px solid #b6e2c6;
+        border-radius: 7px;
+        font-size: 1rem;
+        background: #f8fafb;
+        transition: border 0.2s;
+      }
+      .form-crear-modal input[type="text"]:focus,
+      .form-crear-modal input[type="number"]:focus,
+      .form-crear-modal select:focus {
+        border-color: #219150;
+        outline: none;
+      }
+      .close-modal-btn {
+        position: absolute;
+        top: 1.1rem;
+        right: 1.1rem;
+        background: none;
+        border: none;
+        font-size: 1.6rem;
+        color: #888;
+        cursor: pointer;
+        transition: color 0.2s;
+        z-index: 10;
+      }
+      .close-modal-btn:hover {
+        color: #e74c3c;
+      }
+      @media (max-width: 600px) {
+        .form-crear-modal {
+          min-width: 90vw;
+          max-width: 98vw;
+          padding: 1.2rem 0.7rem 1.5rem 0.7rem;
+        }
+      }
+    </style>
+</head>
+<body>
+    <button class="btn-accion btn-volver" style="margin-bottom:1.5rem;" onclick="window.location.href='/src/menu.html'">← Volver</button>
+    <h1>Gestión de Evaluaciones</h1>
+    <div class="filtros-eva">
+      <label>
+        Ver:
+        <select id="filtro-proyecto-unico">
+          <option value="">Todos</option>
+          <option value="1">Proyecto I</option>
+          <option value="3">Proyecto II</option>
+          <option value="4">Proyecto III</option>
+        </select>
+      </label>
+      <label id="filtro-contenido-label" style="display:none;">
+        Contenido:
+        <select id="filtro-contenido-unico" style="min-width:120px;">
+          <option value="">Todos</option>
+        </select>
+      </label>
+      <button onclick="abrirCrearEvaluacion()" class="btn-accion btn-editar">+ Crear Evaluación</button>
+    </div>
+
+    <!-- Tabla de evaluaciones -->
+    <table class="tabla-evaluaciones">
+      <thead>
+        <tr>
+          <th>Proyecto</th>
+          <th>Pregunta</th>
+          <th>Opciones</th>
+          <th>Correcta</th>
+          <th>Puntos</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="eva-list"></tbody>
+    </table>
+
+    <!-- Modal para crear evaluación -->
+    <div id="modal-eva-bg" class="modal-bg" style="display:none;">
+      <form id="eva-form" class="form-crear-modal">
+        <button type="button" class="close-modal-btn" onclick="cerrarCrearEvaluacion()">&times;</button>
+        <h3 id="eva-modal-titulo">Crear Evaluación</h3>
+        <div class="form-group">
+          <label for="eva-proyecto">Proyecto</label>
+          <select id="eva-proyecto" name="proyecto" required>
+            <option value="">Seleccione</option>
+            <option value="1">Proyecto I</option>
+            <option value="3">Proyecto II</option>
+            <option value="4">Proyecto III</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="eva-contenido">Contenido</label>
+          <select id="eva-contenido" name="contenido" required>
+            <option value="">Seleccione</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="eva-pregunta">Pregunta</label>
+          <input type="text" name="pregunta" id="eva-pregunta" required>
+        </div>
+        <div class="form-group">
+          <label>Opciones</label>
+          <input type="text" name="opcion1" id="eva-op1" required placeholder="Opción A">
+          <input type="text" name="opcion2" id="eva-op2" required placeholder="Opción B">
+          <input type="text" name="opcion3" id="eva-op3" required placeholder="Opción C">
+        </div>
+        <div class="form-group">
+          <label for="eva-correcta">Respuesta correcta</label>
+          <select name="correcta" id="eva-correcta" required>
+            <option value="1">Opción A</option>
+            <option value="2">Opción B</option>
+            <option value="3">Opción C</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="eva-puntos">Puntos</label>
+          <input type="number" name="puntos" id="eva-puntos" min="1" value="1" required>
+        </div>
+        <input type="hidden" id="eva-id">
+        <div style="display:flex; gap:0.7rem; margin-top:1rem;">
+          <button type="button" id="eva-add-more" class="btn-accion btn-editar">Agregar otra pregunta</button>
+          <button type="submit" id="eva-submit" class="btn-accion">Guardar y salir</button>
+          <button type="button" id="eva-cancel" class="btn-accion" style="display:none;">Cancelar</button>
+        </div>
+      </form>
+      <div id="eva-msg"></div>
+    </div>
+
+    <script>
+if (!localStorage.getItem('adminToken')) {
+  window.location.href = "/src/confirmacion.html";
+}
+const API = "http://localhost:4000";
+const token = localStorage.getItem('adminToken');
+const evaForm = document.getElementById('eva-form');
+const evaMsg = document.getElementById('eva-msg');
+const evaList = document.getElementById('eva-list');
+const evaProyecto = document.getElementById('eva-proyecto');
+const evaContenido = document.getElementById('eva-contenido');
+const evaId = document.getElementById('eva-id');
+const evaCancel = document.getElementById('eva-cancel');
+const filtroProyectoUnico = document.getElementById('filtro-proyecto-unico');
+const filtroContenidoUnico = document.createElement('select');
+const filtroContenidoLabel = document.getElementById('filtro-contenido-label');
+const filtroContenidoSelect = document.getElementById('filtro-contenido-unico');
+let proyectos = [
+  { id: 1, titulo: "Proyecto I" },
+  { id: 3, titulo: "Proyecto II" },
+  { id: 4, titulo: "Proyecto III" }
+];
+let contenidos = [];
+let evaluaciones = [];
+let todosLosContenidos = [];
+
+// Cargar todos los contenidos al iniciar
+async function cargarTodosLosContenidos() {
+  const res = await fetch(`${API}/contenido`, { headers: { Authorization: "Bearer " + token } }); // <-- corregido
+  const data = await res.json();
+  // Si tu backend responde { data: [...] }
+  todosLosContenidos = Array.isArray(data) ? data : data.data;
+}
+cargarTodosLosContenidos();
+
+// Cargar contenidos filtrados según proyecto seleccionado
+function cargarContenidosForm() {
+  const idProyecto = evaProyecto.value;
+  if (!idProyecto) {
+    evaContenido.innerHTML = `<option value="">Seleccione</option>`;
+    return;
+  }
+  // Filtrar los contenidos por id_proyecto
+  const filtrados = todosLosContenidos.filter(c => String(c.id_proyecto) === idProyecto);
+  console.log("Contenidos filtrados para proyecto", idProyecto, filtrados); // <-- Agregado para depuración
+  evaContenido.innerHTML = `<option value="">Seleccione</option>` +
+    filtrados.map((c, i) => `<option value="${c.id}">Contenido ${i + 1}</option>`).join('');
+}
+evaProyecto.addEventListener('change', cargarContenidosForm);
+
+// Listar evaluaciones with filtro único
+async function listarEvaluaciones() {
+  const res = await fetch(API + "/evaluacion", { headers: { Authorization: "Bearer " + token } });
+  let result = await res.json();
+  let datos = Array.isArray(result) ? result : result.data;
+  if (!Array.isArray(datos)) datos = [];
+  // Filtro por proyecto
+  if (filtroProyectoUnico.value) datos = datos.filter(e => String(e.id_proyecto) === filtroProyectoUnico.value);
+  // Filtro por contenido
+  if (filtroContenidoSelect.value) datos = datos.filter(e => String(e.id_contenido) === filtroContenidoSelect.value);
+  evaList.innerHTML = datos.map(e => `
+    <tr>
+      <td>${proyectos.find(p => p.id == e.id_proyecto)?.titulo || e.id_proyecto}</td>
+      <td>${e.pregunta}</td>
+      <td>
+        A: ${e.opcion_a}<br>
+        B: ${e.opcion_b}<br>
+        C: ${e.opcion_c}
+      </td>
+      <td>${e.respuesta_correcta}</td>
+      <td>${e.puntos || 1}</td>
+      <td>
+        <div class="acciones-eva">
+          <button onclick="window.location.href='/src/contenido/evaluacion/pro${e.id_proyecto}/eva_pro${e.id_proyecto}_con${e.id_contenido}.html'" class="btn-accion btn-editar" title="Editar evaluación">Editar</button>
+          <button onclick="eliminarEva('${e.id}')" class="btn-accion btn-eliminar" title="Eliminar evaluación">Eliminar</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+  if (!datos.length) evaList.innerHTML = `<tr><td colspan="6" class="sin-evaluaciones">No hay evaluaciones.</td></tr>`;
+}
+filtroProyectoUnico.addEventListener('change', function() {
+  if (this.value) {
+    cargarContenidosFiltro(this.value);
+    filtroContenidoLabel.style.display = "inline-flex";
+  } else {
+    filtroContenidoLabel.style.display = "none";
+    filtroContenidoSelect.innerHTML = `<option value="">Todos</option>`;
+  }
+  filtroContenidoSelect.value = "";
+  listarEvaluaciones();
+});
+filtroContenidoSelect.addEventListener('change', listarEvaluaciones);
+
+// Cargar opciones de contenido para el filtro
+async function cargarContenidosFiltro(idProyecto) {
+  // Si ya tienes todosLosContenidos cargados, puedes filtrar aquí
+  const filtrados = todosLosContenidos.filter(c => String(c.id_proyecto) === String(idProyecto));
+  filtroContenidoSelect.innerHTML = `<option value="">Todos</option>` +
+    filtrados.map(c => `<option value="${c.id}">Contenido ${c.orden_contenido}</option>`).join('');
+}
+
+// Modal crear evaluación
+window.abrirCrearEvaluacion = function() {
+  evaForm.reset();
+  evaId.value = "";
+  evaCancel.style.display = "none";
+  document.getElementById('eva-modal-titulo').textContent = "Crear Evaluación";
+  document.getElementById('modal-eva-bg').style.display = "flex";
+};
+window.cerrarCrearEvaluacion = function() {
+  evaForm.reset();
+  evaId.value = "";
+  evaCancel.style.display = "none";
+  document.getElementById('modal-eva-bg').style.display = "none";
+};
+
+// Guardar evaluación (crear o editar)
+evaForm.onsubmit = async e => {
+  e.preventDefault();
+  await guardarPregunta();
+  evaMsg.textContent = "¡Guardado!";
+  evaForm.reset();
+  evaId.value = "";
+  evaCancel.style.display = "none";
+  listarEvaluaciones();
+  document.getElementById('modal-eva-bg').style.display = "none";
+};
+
+// Guardar y limpiar solo pregunta/opciones (mantener proyecto/contenido)
+document.getElementById('eva-add-more').onclick = async function() {
+  if (!evaProyecto.value || !evaContenido.value) {
+    evaMsg.textContent = "Selecciona proyecto y contenido.";
+    return;
+  }
+  const ok = await guardarPregunta();
+  if (ok) {
+    // Limpiar solo campos de pregunta y opciones
+    document.getElementById('eva-pregunta').value = "";
+    document.getElementById('eva-op1').value = "";
+    document.getElementById('eva-op2').value = "";
+    document.getElementById('eva-op3').value = "";
+    document.getElementById('eva-correcta').value = "1";
+    document.getElementById('eva-puntos').value = "1";
+    evaMsg.textContent = "Pregunta agregada. Puedes ingresar otra.";
+    document.getElementById('eva-pregunta').focus();
+    listarEvaluaciones();
+  }
+};
+
+// Función para guardar pregunta (usada por ambos botones)
+async function guardarPregunta() {
+  const data = {
+    id_proyecto: evaProyecto.value,
+    id_contenido: evaContenido.value,
+    pregunta: document.getElementById('eva-pregunta').value,
+    opcion_a: document.getElementById('eva-op1').value,
+    opcion_b: document.getElementById('eva-op2').value,
+    opcion_c: document.getElementById('eva-op3').value,
+    respuesta_correcta: document.getElementById('eva-correcta').value,
+    puntos: document.getElementById('eva-puntos').value
+  };
+  if (!data.pregunta || !data.opcion_a || !data.opcion_b || !data.opcion_c) {
+    evaMsg.textContent = "Completa todos los campos de la pregunta.";
+    return false;
+  }
+  let url = API + "/evaluacion/create";
+  let method = "POST";
+  if (evaId.value) {
+    url = API + "/evaluacion/" + evaId.value;
+    method = "PUT";
+  }
+  const res = await fetch(url, {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token
+    },
+    body: JSON.stringify(data)
+  });
+  const result = await res.json();
+  if (res.ok) {
+    evaId.value = ""; // Siempre limpiar para modo agregar
+    return true;
+  } else {
+    evaMsg.textContent = result.message || "Error";
+    return false;
+  }
+}
+
+// Editar evaluación
+window.editarEva = function(id) {
+  fetch(API + "/evaluacion/" + id, { headers: { Authorization: "Bearer " + token } })
+    .then(res => res.json())
+    .then(e => {
+      evaProyecto.value = e.id_proyecto;
+      cargarContenidosForm().then(() => {
+        evaContenido.value = e.id_contenido;
+      });
+      document.getElementById('eva-pregunta').value = e.pregunta;
+      document.getElementById('eva-op1').value = e.opcion_a;
+      document.getElementById('eva-op2').value = e.opcion_b;
+      document.getElementById('eva-op3').value = e.opcion_c;
+      document.getElementById('eva-correcta').value = e.respuesta_correcta;
+      document.getElementById('eva-puntos').value = e.puntos || 1;
+      evaId.value = e.id;
+      evaCancel.style.display = "inline";
+      document.getElementById('eva-modal-titulo').textContent = "Editar Evaluación";
+      document.getElementById('modal-eva-bg').style.display = "flex";
+    });
+};
+evaCancel.onclick = () => {
+  evaForm.reset();
+  evaId.value = "";
+  evaCancel.style.display = "none";
+  document.getElementById('modal-eva-bg').style.display = "none";
+};
+
+// Eliminar evaluación
+window.eliminarEva = function(id) {
+  if (!confirm("¿Eliminar esta evaluación?")) return;
+  fetch(API + "/evaluacion/" + id, {
+    method: "DELETE",
+    headers: { Authorization: "Bearer " + token }
+  }).then(() => listarEvaluaciones());
+};
+
+// Inicializar
+listarEvaluaciones();
+    </script>
+    <script src="/src/cerrar-sesion.js"></script>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Lista de Docentes Administradores</title>
+  <link rel="stylesheet" href="/src/admin/stylo.css">
+  <style>
+    .lista-container {
+      max-width: 600px;
+      margin: 3rem auto;
+      background: #fff;
+      border-radius: 1rem;
+      box-shadow: 0 2px 16px #2a8d4f22;
+      padding: 2.5rem 2rem 2rem 2rem;
+      position: relative;
+    }
+    .lista-container h2 {
+      text-align: center;
+      color: #2a8d4f;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+    }
+    .btn-volver, .btn-registrar {
+      background: #fff;
+      color: #2a8d4f;
+      border: 2px solid #2a8d4f;
+      border-radius: 6px;
+      padding: 0.7rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      margin-right: 1rem;
+      margin-bottom: 1rem;
+    }
+    .btn-volver:hover, .btn-registrar:hover {
+      background: #2a8d4f;
+      color: #fff;
+    }
+    .btn-eliminar {
+      background: #b00020;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 0.4rem 1rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-eliminar:hover {
+      background: #7a0015;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1.5rem;
+    }
+    th, td {
+      padding: 0.8rem;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    th {
+      background: #2a8d4f;
+      color: #fff;
+      font-weight: 600;
+    }
+    .success-msg {
+      color: #23713d;
+      font-weight: 600;
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .error-msg {
+      color: #b00020;
+      font-weight: 600;
+      margin-top: 1rem;
+      text-align: center;
+    }
+    @media (max-width: 600px) {
+      .lista-container {
+        padding: 1.2rem 0.5rem 1rem 0.5rem;
+      }
+      table, th, td {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="lista-container">
+    <button class="btn-volver" onclick="window.history.back()">← Volver</button>
+    <a href="registro.html" class="btn-registrar" style="text-decoration:none;">Registrar nuevo</a>
+    <h2>Lista de Docentes Administradores</h2>
+    <div id="msg"></div>
+    <table id="tabla-admins">
+      <thead>
+        <tr>
+          <th>Nombre completo</th>
+          <th>Cédula</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Aquí se insertan los usuarios -->
+      </tbody>
+    </table>
+  </div>
+  <script>
+    // Proteger acceso: solo admins con token pueden entrar
+    if (!localStorage.getItem('adminToken')) {
+      window.location.href = "/src/confirmacion.html";
+    }
+
+    const tabla = document.getElementById('tabla-admins').querySelector('tbody');
+    const msg = document.getElementById('msg');
+
+    async function cargarAdmins() {
+      msg.textContent = '';
+      tabla.innerHTML = '<tr><td colspan="3">Cargando...</td></tr>';
+      try {
+        const res = await fetch('http://localhost:4000/admin', {
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('adminToken')
+          }
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          msg.textContent = data.message || "Error al cargar la lista.";
+          msg.className = "error-msg";
+          tabla.innerHTML = '';
+          return;
+        }
+        if (Array.isArray(data.data) && data.data.length > 0) {
+          tabla.innerHTML = '';
+          data.data.forEach(admin => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td>${admin.nombre_completo}</td>
+              <td>${admin.cedula}</td>
+              <td>
+                <button class="btn-eliminar" onclick="eliminarAdmin(${admin.id}, this)">Eliminar</button>
+              </td>
+            `;
+            tabla.appendChild(tr);
+          });
+        } else {
+          tabla.innerHTML = '<tr><td colspan="3">No hay administradores registrados.</td></tr>';
+        }
+      } catch (err) {
+        msg.textContent = "Error de conexión con el servidor.";
+        msg.className = "error-msg";
+        tabla.innerHTML = '';
+      }
+    }
+
+    async function eliminarAdmin(id, btn) {
+      if (!confirm("¿Seguro que deseas eliminar este administrador?")) return;
+      btn.disabled = true;
+      btn.textContent = "Eliminando...";
+      msg.textContent = '';
+      msg.className = '';
+      try {
+        const res = await fetch(`http://localhost:4000/admin/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('adminToken')
+          }
+        });
+        if (res.status === 204) {
+          msg.textContent = "Administrador eliminado correctamente.";
+          msg.className = "success-msg";
+          cargarAdmins();
+        } else {
+          const data = await res.json();
+          msg.textContent = data.message || "No se pudo eliminar.";
+          msg.className = "error-msg";
+          btn.disabled = false;
+          btn.textContent = "Eliminar";
+        }
+      } catch (err) {
+        msg.textContent = "Error de conexión con el servidor.";
+        msg.className = "error-msg";
+        btn.disabled = false;
+        btn.textContent = "Eliminar";
+      }
+    }
+
+    // Hacer la función global para el onclick
+    window.eliminarAdmin = eliminarAdmin;
+
+    cargarAdmins();
+  </script>
+  <script src="/src/cerrar-sesion.js"></script>
+</body>
+</html>

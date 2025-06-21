@@ -35,7 +35,7 @@
                     href="/src/contenido/eva.html">Atras</a>
                 </div>
                 <h1 id="contenido-titulo">Evaluaciones de Proyecto 1</h1>
-                <button class="logout-btn"  onclick="window.location.href='/src/Index.html'">
+                <button class="logout-btn"  onclick="cerrarSesionAdmin()">
                     <i class="fas fa-sign-out-alt"></i> Cerrar sesión
                 </button>
             </header>
@@ -60,5 +60,15 @@
                 </a>
             </div>       
     </div>
+    <script src="/src/cerrar-sesion.js"></script>
+
+<script>
+if (!localStorage.getItem('adminToken')) {
+  var s = document.createElement('script');
+  s.src = '/src/funciones/bunny-pet3.js';
+  document.head.appendChild(s);
+}
+</script>
+
 </body>
 </html>

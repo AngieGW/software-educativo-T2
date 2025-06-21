@@ -3,9 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EVALUACIÓN CONTENIDO 1</title>
+    <title>EVALUACIÓN CONTENIDO 4</title>
     <link rel="stylesheet" href="con1.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+
+/* Modales: fondo y animación */
+.modal-bg {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(30, 40, 60, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: modalFadeIn 0.3s;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Formulario modal */
+.form-crear-modal {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(30,40,60,0.18);
+  padding: 2.5rem 2rem 2rem 2rem;
+  min-width: 320px;
+  max-width: 420px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  animation: modalFadeIn 0.4s;
+}
+
+.form-crear-modal h3 {
+  margin-top: 0;
+  margin-bottom: 1.2rem;
+  color: #219150;
+  font-size: 1.35rem;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form-crear-modal label {
+  font-weight: 600;
+  color: #2a8d4f;
+  font-size: 1rem;
+}
+
+.form-crear-modal input[type="text"],
+.form-crear-modal input[type="email"],
+.form-crear-modal select {
+  padding: 0.5rem 0.7rem;
+  border: 1.5px solid #b6e2c6;
+  border-radius: 7px;
+  font-size: 1rem;
+  background: #f8fafb;
+  transition: border 0.2s;
+}
+
+.form-crear-modal input[type="text"]:focus,
+.form-crear-modal input[type="email"]:focus,
+.form-crear-modal select:focus {
+  border-color: #219150;
+  outline: none;
+}
+
+.btn-accion, .btn-editar {
+  background: #219150;
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 0.2rem 0.1rem;
+  transition: background 0.2s;
+}
+
+.btn-accion:hover, .btn-editar:hover {
+  background: #176c3a;
+}
+
+.close-modal-btn {
+  position: absolute;
+  top: 1.1rem;
+  right: 1.1rem;
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.2s;
+  z-index: 10;
+}
+
+.close-modal-btn:hover {
+  color: #e74c3c;
+}
+
+/* Indicador de pregunta en editor */
+#editor-indicador {
+  text-align: center;
+  font-size: 1.05rem;
+  color: #219150;
+  margin-bottom: 0.7rem;
+  font-weight: 600;
+}
+
+/* Estilos específicos para el número de lista */
+#est-numero-lista::-webkit-inner-spin-button,
+#est-numero-lista::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+#est-numero-lista {
+  appearance: textfield;
+  box-shadow: 0 1px 4px #b6e2c6;
+  transition: border 0.2s;
+}
+#est-numero-lista:focus {
+  border-color: #176c3a;
+  outline: none;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .form-crear-modal {
+    min-width: 90vw;
+    max-width: 98vw;
+    padding: 1.2rem 0.7rem 1.5rem 0.7rem;
+  }
+}
+
+</style>
 </head>
 <body>
     <div class="container">
@@ -36,7 +182,9 @@
                     <a class="logout-btn" href="/src/contenido/evaluacion/eva_pro1.html">Atrás</a>
                 </div>
                 <h1 id="contenido-titulo">EVALUACIÓN CONTENIDO 4</h1>
-                <button class="logout-btn" onclick="window.location.href='/src/Index.html'">
+                <button id="btn-enviar-evaluacion" class="logout-btn" style="display:none; margin-left:1rem;">Enviar evaluación</button>
+<button id="btn-editar-evaluacion" class="logout-btn" style="display:none; margin-left:1rem;">Editar preguntas</button>
+                <button class="logout-btn" onclick="cerrarSesionAdmin()">
                     <i class="fas fa-sign-out-alt"></i> Cerrar sesión
                 </button>
             </header>
@@ -72,6 +220,95 @@
         </main>
     </div>
 
-    <script src="evaluacion (3).js"></script>
+    <!-- Modal editor preguntas -->
+<div id="modal-editar" class="modal-bg" style="display:none;">
+  <form id="form-editar" class="form-crear-modal" style="max-height:80vh;overflow:auto;">
+    <button type="button" id="cerrar-editor" class="close-modal-btn">&times;</button>
+    <h3>Editar Pregunta</h3>
+    <div id="editor-indicador"></div>
+    <div class="form-group">
+      <label>Pregunta</label>
+      <input type="text" id="edit-pregunta" required>
+    </div>
+    <div class="form-group">
+      <label>Opción 1</label>
+      <input type="text" id="edit-op1" required>
+    </div>
+    <div class="form-group">
+      <label>Opción 2</label>
+      <input type="text" id="edit-op2" required>
+    </div>
+    <div class="form-group">
+      <label>Opción 3</label>
+      <input type="text" id="edit-op3" required>
+    </div>
+    <div class="form-group">
+      <label>Respuesta correcta</label>
+      <select id="edit-correcta" required>
+        <option value="1">Opción 1</option>
+        <option value="2">Opción 2</option>
+        <option value="3">Opción 3</option>
+      </select>
+    </div>
+    <div style="display:flex;justify-content:space-between;">
+      <button type="button" id="editor-anterior" class="btn-accion">Anterior</button>
+      <button type="submit" class="btn-accion btn-editar">Guardar</button>
+      <button type="button" id="editor-siguiente" class="btn-accion">Siguiente</button>
+    </div>
+  </form>
+</div>
+
+    <!-- Modal formulario estudiante -->
+<div id="modal-estudiante" class="modal-bg" style="display:none;">
+  <form id="form-estudiante" class="form-crear-modal">
+    <button type="button" id="cerrar-estudiante" class="close-modal-btn">&times;</button>
+    <h3>Estudiante</h3>
+    <div class="form-group">
+  <label>Nombre</label>
+  <input type="text" id="est-nombre" required>
+</div>
+<div class="form-group">
+  <label>Apellido</label>
+  <input type="text" id="est-apellido" required>
+</div>
+<div class="form-group">
+  <label>Cedula</label>
+  <input type="text" id="est-grado" required>
+</div>
+<div class="form-group">
+  <label>Sección</label>
+  <input type="text" id="est-seccion" maxlength="1" required>
+</div>
+<div class="form-group">
+  <label>Número de lista</label>
+  <input type="number" id="est-numero-lista" required min="1" max="99" maxlength="2" style="width:70px;text-align:center;">
+</div>
+    <div class="form-group">
+    <button type="submit" class="btn-accion btn-editar">Guardar</button>
+  </form>
+</div>
+
+    <!-- Modal resultado evaluación -->
+<div id="modal-resultado" class="modal-bg" style="display:none;">
+  <div class="form-crear-modal" style="max-width:350px;">
+    <h3>¡Evaluación finalizada!</h3>
+    <div class="form-group">
+      <label>Puntaje obtenido:</label>
+      <span id="resultado-puntaje" style="font-size:2rem;color:#219150;font-weight:bold;"></span>
+    </div>
+    <button class="btn-accion" onclick="cerrarModalResultado()">Cerrar</button>
+  </div>
+</div>
+
+    <script src="evaluacion4.js"></script>
+    <script src="/src/cerrar-sesion.js"></script>
+<script>
+if (!localStorage.getItem('adminToken')) {
+  var s = document.createElement('script');
+  s.src = '/src/funciones/bunny-pet3.js';
+  document.head.appendChild(s);
+}
+</script>
+
 </body>
 </html>

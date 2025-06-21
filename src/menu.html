@@ -11,7 +11,7 @@
     <main class="contenido-principal">
         <header class="cabecera">
             <h1>Complejo Educativo "Dr. Regulo Burelli Rivas"</h1>
-            <div class="boton-sesion"onclick="window.location.href='/src/Index.html'">cerrar sesión</div>
+            <div class="boton-sesion" onclick="cerrarSesionAdmin()">cerrar sesión</div>
         </header>
         <section class="seccion-bienvenida">
             <h2>Bienvenidos</h2>
@@ -86,7 +86,49 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 
-    <script src="funciones/bunny-button.js"></script>
     <script src="funciones/login.js"></script>
+<!-- Menú de administración flotante en la parte inferior izquierda -->
+<div id="admin-menu" style="display:none; position:fixed; bottom:32px; left:32px; z-index:2000;">
+  <div style="
+    background: #2a8d4f;
+    border-radius: 1.2rem;
+    box-shadow: 0 4px 24px #2a8d4f33;
+    padding: 1.2rem 1.5rem 1.2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    min-width: 220px;
+  ">
+    <a href="/src/admin/contenidos.html" style="color:#fff; font-weight:600; text-decoration:none; font-size:1.08rem; border-radius:8px; padding:0.5rem 1rem; transition:background 0.2s; display:block;">Gestionar Contenidos</a>
+    <a href="/src/admin/evaluaciones.html" style="color:#fff; font-weight:600; text-decoration:none; font-size:1.08rem; border-radius:8px; padding:0.5rem 1rem; transition:background 0.2s; display:block;">Gestionar Evaluaciones</a>
+    <a href="/src/admin/registro.html" style="color:#fff; font-weight:600; text-decoration:none; font-size:1.08rem; border-radius:8px; padding:0.5rem 1rem; transition:background 0.2s; display:block;">Registrar Docente</a>
+  </div>
+</div>
+<script>
+// Mostrar menú solo si hay token de admin
+if (localStorage.getItem('adminToken')) {
+  document.getElementById('admin-menu').style.display = 'block';
+}
+</script>
+
+// se muestre la mascota en administrador
+<script src="/src/cerrar-sesion.js"></script>
+<script>
+if (!localStorage.getItem('adminToken')) {
+  var s = document.createElement('script');
+  s.src = '/src/funciones/bunny-button.js';
+  document.head.appendChild(s);
+}
+</script>
+
+
+<script>
+  // Mostrar alerta de bienvenida solo si viene del botón de estudiante
+  if (sessionStorage.getItem('bienvenidaEstudiante')) {
+    alert('¡Bienvenido/a estudiante!');
+    sessionStorage.removeItem('bienvenidaEstudiante');
+  }
+</script>
 </body>
 </html>

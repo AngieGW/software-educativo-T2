@@ -1,6 +1,7 @@
-# EJECUTA UN SERVIDOR
+# TODO: Pulir esto para que sirva de indicaciones de como ejecutarlo como developer y agregarlo en el README
+## EJECUTA UN SERVIDOR
 yo tengo la carpeta backend (donde est la API) y la carpeta Frontend (donde esta esto)
-esas carpetas estand dentro de una caprte que se llama proyecto
+esas carpetas estando dentro de una carpeta que se llama proyecto
 
 yo abro en mi VS code la carpeta proyecto
 abro la terminal y coloco:
@@ -23,7 +24,7 @@ con eso ambos servidores estan corriendo
 
 abre dos pestañas en el navegador:
 
-localhost:4000 (en tu caso el 4000 cre que es 3306, eso esta en tu archivo .env del backend)
+localhost:4000 (en tu caso el 4000 creo que es 3306, eso esta en tu archivo .env del backend)
 Alli te debe mostrar un mensaje 
 
 y luego:

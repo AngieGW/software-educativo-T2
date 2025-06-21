@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Registro de Docente Administrador</title>
+  <link rel="stylesheet" href="/src/admin/stylo.css">
+  <style>
+    .registro-container {
+      max-width: 400px;
+      margin: 3rem auto;
+      background: #fff;
+      border-radius: 1rem;
+      box-shadow: 0 2px 16px #2a8d4f22;
+      padding: 2.5rem 2rem 2rem 2rem;
+      position: relative;
+    }
+    .registro-container h2 {
+      text-align: center;
+      color: #2a8d4f;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+    }
+    .success-msg {
+      color: #23713d;
+      font-weight: 600;
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .error-msg {
+      color: #b00020;
+      font-weight: 600;
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .botones-inferiores {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2rem;
+      gap: 1rem;
+    }
+    .btn-volver {
+      background: #fff;
+      color: #2a8d4f;
+      border: 2px solid #2a8d4f;
+      border-radius: 6px;
+      padding: 0.7rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-volver:hover {
+      background: #2a8d4f;
+      color: #fff;
+    }
+    .btn-registrar {
+      background: #2a8d4f;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 0.7rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-registrar:hover {
+      background: #23713d;
+    }
+    .btn-listar {
+      position: absolute;
+      top: 1.2rem;
+      left: -120px;
+      background: #2a8d4f;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #2a8d4f22;
+      transition: background 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-listar:hover {
+      background: #23713d;
+      color: #fff;
+      text-decoration: none;
+    }
+    @media (max-width: 600px) {
+      .btn-listar {
+        position: static;
+        display: block;
+        margin-bottom: 1rem;
+        left: 0;
+      }
+      .registro-container {
+        padding: 1.2rem 0.5rem 1rem 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="registro-container">
+    <a href="listar.html" class="btn-listar">Ver lista</a>
+    <h2>Registrar Docente Administrador</h2>
+    <form id="registro-admin" autocomplete="off">
+      <label for="nombre">Nombre completo</label>
+      <input type="text" name="nombre" id="nombre" placeholder="Nombre completo" required>
+
+      <label for="cedula">Cédula</label>
+      <input type="text" name="cedula" id="cedula" placeholder="Cédula" required pattern="^[0-9]{6,12}$" title="Solo números">
+
+      <label for="clave">Clave</label>
+      <input type="password" name="clave" id="clave" placeholder="Clave" required minlength="4">
+
+      <div class="botones-inferiores">
+        <button type="button" class="btn-volver" onclick="window.history.back()">← Volver</button>
+        <button type="submit" class="btn-registrar">Registrar</button>
+      </div>
+    </form>
+    <div id="registro-msg"></div>
+  </div>
+  <script>
+    // Proteger acceso: solo admins con token pueden entrar
+    if (!localStorage.getItem('adminToken')) {
+      window.location.href = "/src/confirmacion.html";
+    }
+
+    // Función para registrar usuario
+    const form = document.getElementById('registro-admin');
+    const msg = document.getElementById('registro-msg');
+
+    form.onsubmit = async e => {
+      e.preventDefault();
+      msg.textContent = '';
+      msg.className = '';
+      const nombre_completo = form.nombre.value.trim();
+      const cedula = form.cedula.value.trim();
+      const credential = form.clave.value.trim(); // Cambiado a credential
+
+      if (!nombre || !cedula || !credential) {
+        msg.textContent = "Completa todos los campos.";
+        msg.className = "error-msg";
+        return;
+      }
+
+      try {
+        const res = await fetch('http://localhost:4000/admin/create', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('adminToken')
+          },
+          body: JSON.stringify({ nombre_completo, cedula, credential }) // Cambiado a credential
+        });
+        const result = await res.json();
+        if (res.ok) {
+          msg.textContent = "¡Docente registrado exitosamente!";
+          msg.className = "success-msg";
+          form.reset();
+        } else {
+          msg.textContent = result.message || "Error al registrar.";
+          msg.className = "error-msg";
+        }
+      } catch (err) {
+        msg.textContent = "Error de conexión con el servidor.";
+        msg.className = "error-msg";
+      }
+    };
+  </script>
+  <script src="/src/cerrar-sesion.js"></script>
+</body>
+</html>

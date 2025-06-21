@@ -78,8 +78,8 @@
             line-height: 1.5;
             color: #3a2d13;
             position: absolute;
-            bottom: 300px;
-            right: 0;
+            top: 1.5rem;
+            left: -260px;
             display: none;
             animation: fadeIn 0.3s ease-in-out;
             font-family: 'Segoe UI', Arial, sans-serif;

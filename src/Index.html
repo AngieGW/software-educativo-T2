@@ -10,7 +10,7 @@
     <main class="contenido-principal">
         <header class="cabecera">
             <nav class="cabecera-navegacion">
-            <h1 class="texto-principal">COMPLEJO ESTUDIANTIL DR.REGULO</h1>
+            <h1 class="texto-principal">Complejo Estudiantil "Dr. Regulo Burelli Rivas"</h1>
             </nav>
         </header>
     <div class="contenedor-seleccion">
@@ -161,6 +161,11 @@
     </div><h1 class="texto-carta">Docente</h1></button>
 
     </div>
-    <script src=""></script>
+    <script>
+  document.getElementById('usuario').onclick = function() {
+    sessionStorage.setItem('bienvenidaEstudiante', '1');
+    window.location.href = 'menu.html';
+  };
+</script>
 </body>
 </html>

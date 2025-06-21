@@ -13,32 +13,43 @@
             href="/src/menu.html">Atras</a>
         </div>
         <h1>PROYECTO I</h1>
-        <button class="logout-btn" onclick="window.location.href='/src/Index.html'" >Cerrar Sesión</button>
+        <button class="logout-btn" onclick="cerrarSesionAdmin()">Cerrar Sesión</button>
 
     </header>
 
     <main>
         <div class="contenido-grid">
-            <a href="temas/con1_1.html" class="contenido-box">
+            <a href="temas/con1.html" class="contenido-box">
                 <h2>Contenido 1</h2>
             </a>
-            <a href="temas/con2_1.html" class="contenido-box">
+            <a href="temas/con2.html" class="contenido-box">
                 <h2>Contenido 2</h2>
             </a>
-            <a href="temas/con3_1.html" class="contenido-box">
+            <a href="temas/con3.html" class="contenido-box">
                 <h2>Contenido 3</h2>
             </a>
-            <a href="temas/con4_1.html" class="contenido-box">
+            <a href="temas/con4.html" class="contenido-box">
                 <h2>Contenido 4</h2>
             </a>
-            <a href="temas/con5_1.html" class="contenido-box">
+            <a href="temas/con5.html" class="contenido-box">
                 <h2>Contenido 5</h2>
             </a>
-            <a href="temas/con6_1.html" class="contenido-box">
+            <a href="temas/con6.html" class="contenido-box">
                 <h2>Contenido 6</h2>
             </a>
         </div>
     </main>
 <script type="module" src="../../../funciones/contenido.js"></script>
+
+
+<script src="/src/cerrar-sesion.js"></script>
+<script>
+if (!localStorage.getItem('adminToken')) {
+  var s = document.createElement('script');
+  s.src = '/src/funciones/bunny-pet.js';
+  document.head.appendChild(s);
+}
+</script>
+
 </body>
 </html>

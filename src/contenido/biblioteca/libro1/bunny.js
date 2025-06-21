@@ -54,7 +54,7 @@
         bunnyImg.src = bunnyImages[0];
         bunnyImg.alt = 'Bunny Potter';
         bunnyImg.style.cssText = `
-            width: 300px;
+            width: 250px;
             height: auto;
             display: block;
             filter: drop-shadow(0 4px 12px rgba(0,0,0,0.18));
@@ -78,8 +78,8 @@
             line-height: 1.5;
             color: #3a2d13;
             position: absolute;
-            bottom: 340px;
-            right: 0;
+            top: 1.5rem;
+            left: -260px;
             display: none;
             animation: fadeIn 0.3s ease-in-out;
             font-family: 'Segoe UI', Arial, sans-serif;

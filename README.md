@@ -3,7 +3,7 @@
 coloca en la terminal: npx http-server -p 3000
 
 
-# software-educativo-T2
+# software-educativo-T2 Description del proyecto
 Esto es todo lo que tenemos hasta ahora, practicamente lo que te mostre en el video. De la parte del backend no tiene NADAAA porque no consigo como hacer que la base de datos conecte de ninguna manera.
 
 La base de datos son los archivos base.sql (la exporte) y base.db (que es el archivo que uso). Las bases de datos las manejo con DB Browser for SQLite. EL primer paso creo que seria el conectar la base de datos para poder iniciar sesión.
@@ -15,7 +15,7 @@ JS
 SQLite
 podemos usar cualquiera que veamos util para algun fin
 
-# El inicio de sesion:
+# El inicio de sesion: se puede hacer tipo ciclo de vida o fases del proyecto, separar por fases en caso tal 
 Esta el estudiante que, al darle click deberia entrar de inmediato al programa. Luego esta el apartado del maestro, este lleva al archivo confirmacion.html donde me pide solamente la contraseña para entrar
 
 hay dos archivos de java para eso:
@@ -23,8 +23,6 @@ script_original: fue el primero que se hizo, solo muestra la contraseña y te de
 
 script_1: Fue la manera que habia colocado para iniciar sesion. Pero sin nada de base de datos, meti las contraseñas en un array :3
 
-# la carpeta Node_modules:
-la baje en un intento por conectar la base de datos
 
 # FUNCIONES QUE DEBERIA TENER EL SOFTWARE
 
@@ -54,7 +52,7 @@ la baje en un intento por conectar la base de datos
     #FUNCIONES DE ESTUDIANTE:
     Se reinicia luego de cerrar sesion, pero deberia mandar datos al apartado de administrador
 
-# La base de datos:
+# La base de datos: Puedes hacer tipo lista de cuales son y el rol que tiene cada una
 Creo que las tablas se entienden solas. La de contenido tiene varias columnas de Teoria. QUe siento que seria equivalente a cada nuevo parrafo de texto que se tendria que pasar cuando das click a la flechita.
 
 en la tabla de usuarios. En vez de clave, dice cedula, porque pensaba que las contraseñas fueran la cedula

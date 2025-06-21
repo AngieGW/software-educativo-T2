@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Contenidos</title>
+    <link rel="stylesheet" href="/src/admin/stylo.css">
+    <style>
+      body {
+        background: #f8fafb;
+        font-family: 'Segoe UI', Arial, sans-serif;
+      }
+      .contenidos-todos {
+        max-width: 950px;
+        margin: 2rem auto;
+        background: #fff;
+        border-radius: 1rem;
+        box-shadow: 0 2px 16px #2a8d4f22;
+        padding: 2.5rem;
+      }
+      .contenidos-todos h2 {
+        color: #2a8d4f;
+        text-align: center;
+        margin-bottom: 2rem;
+        font-size: 1.7rem;
+        letter-spacing: 1px;
+      }
+      .tabla-contenidos {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+      }
+      .tabla-contenidos th, .tabla-contenidos td {
+        padding: 1rem 0.8rem;
+        font-size: 1rem;
+        border-bottom: 1px solid #e6f5ea;
+        text-align: center;
+      }
+      .tabla-contenidos th {
+        background: linear-gradient(135deg, #2a8d4f, #34a85a);
+        color: #fff;
+      }
+      .tabla-contenidos tr:hover {
+        background: #f0f8f2;
+        transition: all 0.2s ease;
+      }
+      .sin-contenidos {
+        text-align: center;
+        color: #666;
+        font-style: italic;
+        padding: 2rem;
+        background: #f8fafb;
+        border-radius: 8px;
+        margin-top: 1rem;
+      }
+      .btn-accion {
+        padding: 0.4rem 1rem;
+        border-radius: 6px;
+        border: none;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        margin: 0 0.2rem;
+        transition: background 0.2s;
+      }
+      .btn-editar {
+        background: #2a8d4f;
+        color: #fff;
+      }
+      .btn-editar:hover {
+        background: #23713d;
+      }
+      .btn-eliminar {
+        background: #e74c3c;
+        color: #fff;
+      }
+      .btn-eliminar:hover {
+        background: #c0392b;
+      }
+      .btn-volver {
+        background: #e6f5ea;
+        color: #2a8d4f;
+        border: none;
+        border-radius: 7px;
+        padding: 0.7rem 2rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        margin-bottom: 1.5rem;
+        margin-right: 1rem;
+        transition: background 0.2s;
+      }
+      .btn-volver:hover {
+        background: #cce5d6;
+      }
+      /* Modal estilos */
+      .modal-bg {
+        display: none;
+        position: fixed;
+        top: 0; left: 0; width: 100vw; height: 100vh;
+        background: rgba(42,141,79,0.15);
+        z-index: 3000;
+        align-items: center;
+        justify-content: center;
+      }
+      body.modal-abierto {
+        overflow: hidden !important;
+      }
+      .form-crear-modal {
+        background: #fff;
+        border-radius: 1.2rem;
+        box-shadow: 0 4px 32px #2a8d4f33;
+        padding: 2.5rem 2.5rem 2rem 2.5rem;
+        text-align: left;
+        max-width: 650px;
+        min-width: 350px;
+        width: 98vw;
+        position: relative;
+        animation: modalFadeIn 0.3s;
+        display: flex;
+        flex-direction: column;
+        max-height: 92vh;
+        overflow: hidden;
+      }
+      @keyframes modalFadeIn {
+        from { transform: translateY(-40px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+      .close-modal-btn {
+        position: absolute;
+        top: 1rem;
+        right: 1.5rem;
+        font-size: 1.7rem;
+        background: none;
+        border: none;
+        color: #e74c3c;
+        cursor: pointer;
+        transition: color 0.2s;
+      }
+      .close-modal-btn:hover {
+        color: #c0392b;
+      }
+      .form-crear-modal h3 {
+        color: #2a8d4f;
+        text-align: center;
+        margin-bottom: 1.5rem;
+        font-size: 1.3rem;
+        letter-spacing: 1px;
+      }
+      .form-group {
+        margin-bottom: 1.2rem;
+      }
+      .form-crear-modal label {
+        display: block;
+        margin-bottom: 0.3rem;
+        font-weight: 600;
+        color: #2a8d4f;
+        font-size: 1rem;
+      }
+      .form-crear-modal input[type="text"],
+      .form-crear-modal textarea,
+      .form-crear-modal select {
+        width: 100%;
+        padding: 0.6rem 0.8rem;
+        border-radius: 7px;
+        border: 1px solid #cce5d6;
+        font-size: 1rem;
+        background: #f8fafb;
+        margin-bottom: 0.7rem;
+        transition: border 0.2s;
+      }
+      .form-crear-modal input[type="text"]:focus,
+      .form-crear-modal textarea:focus,
+      .form-crear-modal select:focus {
+        border: 1.5px solid #2a8d4f;
+        outline: none;
+      }
+      .guardar-btn {
+        background: linear-gradient(90deg, #2a8d4f 60%, #34a85a 100%);
+        color: #fff;
+        border: none;
+        border-radius: 7px;
+        padding: 0.7rem 2.2rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        width: 100%;
+        transition: background 0.2s;
+      }
+      .guardar-btn:hover {
+        background: linear-gradient(90deg, #23713d 60%, #2a8d4f 100%);
+      }
+      .form-crear-modal .form-group {
+        flex-shrink: 0;
+      }
+      .form-crear-modal .scroll-area {
+        overflow-y: auto;
+        max-height: 45vh;
+        margin-bottom: 1.2rem;
+      }
+      @media (max-width: 700px) {
+        .contenidos-todos {
+          padding: 1.5rem 0.5rem;
+        }
+        .tabla-contenidos th, .tabla-contenidos td {
+          padding: 0.7rem 0.3rem;
+          font-size: 0.95rem;
+        }
+        .form-crear-modal {
+          padding: 1.2rem 0.5rem;
+          max-width: 99vw;
+          min-width: 0;
+        }
+      }
+    </style>
+</head>
+<body>
+    <div class="contenidos-todos">
+      <div style="margin-bottom:1.5rem;">
+        <button class="btn-volver" onclick="window.location.href='/src/menu.html'">
+          ← Volver al menú principal
+        </button>
+        <button class="btn-accion btn-editar" onclick="abrirCrearContenido()" style="margin-left:1rem;">
+          + Crear Contenido
+        </button>
+      </div>
+      <h2>Todos los Contenidos por Proyecto</h2>
+      <div id="tablas-contenidos"></div>
+    </div>
+
+    <!-- Modal para crear contenido -->
+    <div id="modal-bg" class="modal-bg">
+      <form id="form-crear" class="form-crear-modal">
+        <button type="button" class="close-modal-btn" onclick="cerrarCrearContenido()">&times;</button>
+        <h3>Crear Contenido</h3>
+        <div class="form-group">
+          <label for="proyecto-select">Proyecto</label>
+          <select id="proyecto-select" name="id_proyecto" required>
+            <option value="">Seleccione proyecto</option>
+            <option value="1">Proyecto I</option>
+            <option value="3">Proyecto II</option>
+            <option value="4">Proyecto III</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="orden-select">Orden de Contenido</label>
+          <select id="orden-select" name="orden_contenido" required>
+            <option value="">Seleccione orden</option>
+          </select>
+        </div>
+        <div class="scroll-area" id="teorias-area">
+          <div class="form-group">
+            <label for="titulo-input">Título</label>
+            <input type="text" id="titulo-input" name="titulo_contenido" required>
+          </div>
+          <!-- Aquí se generan los campos de teorías -->
+        </div>
+        <button type="submit" class="guardar-btn">Guardar</button>
+      </form>
+    </div>
+
+    <script>
+      const API = "http://localhost:4000/contenido/";
+
+      // Mapeo de id_proyecto a nombre
+      const nombresProyectos = {
+        1: "Proyecto I",
+        3: "Proyecto II",
+        4: "Proyecto III"
+      };
+
+      // Mapeo para rutas de proyectos y carpetas
+      const rutasProyectos = {
+        1: { carpeta: "I/temas", prefijo: "con" },
+        3: { carpeta: "II/temas2", prefijo: "con" },
+        4: { carpeta: "III/temas3", prefijo: "con" }
+      };
+
+      let contenidosGlobal = [];
+
+      // Cargar y mostrar todos los contenidos agrupados por id_proyecto
+      async function cargarContenidos() {
+        try {
+          const res = await fetch(API);
+          const data = await res.json();
+          const contenidos = Array.isArray(data.data) ? data.data : [];
+          contenidosGlobal = contenidos; // Guardar para el modal
+          renderizarTablasPorProyecto(contenidos);
+        } catch (error) {
+          document.getElementById('tablas-contenidos').innerHTML = `
+            <div class="sin-contenidos">
+              Error al cargar los contenidos.
+            </div>
+          `;
+        }
+      }
+
+      // Agrupa los contenidos por id_proyecto y renderiza una tabla por cada proyecto
+      function renderizarTablasPorProyecto(contenidos) {
+        const contenedor = document.getElementById('tablas-contenidos');
+        if (!contenidos.length) {
+          contenedor.innerHTML = `
+            <div class="sin-contenidos">
+              No hay contenidos registrados.
+            </div>
+          `;
+          return;
+        }
+        // Agrupar por id_proyecto
+        const grupos = {};
+        for (const c of contenidos) {
+          if (!grupos[c.id_proyecto]) grupos[c.id_proyecto] = [];
+          grupos[c.id_proyecto].push(c);
+        }
+
+        // Renderizar una tabla por cada proyecto
+        contenedor.innerHTML = Object.keys(grupos).map(id_proyecto => {
+          const lista = grupos[id_proyecto].sort((a, b) => a.orden_contenido - b.orden_contenido);
+          const nombreProyecto = nombresProyectos[id_proyecto] || `Proyecto ${id_proyecto}`;
+          return `
+            <h3 style="color:#2a8d4f; margin-top:2rem;">${nombreProyecto}</h3>
+            <table class="tabla-contenidos">
+              <thead>
+                <tr>
+                  <th>Orden</th>
+                  <th>Título</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${lista.map(c => `
+                  <tr>
+                    <td>${c.orden_contenido}</td>
+                    <td>${c.titulo_contenido}</td>
+                    <td>
+                      <button class="btn-accion btn-editar" onclick="irAEditar(${c.id_proyecto},${c.orden_contenido})">Editar</button>
+                      <button class="btn-accion btn-eliminar" onclick="eliminarContenido(${c.id})">Eliminar</button>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          `;
+        }).join('');
+      }
+
+      // Redirige a la página del contenido correspondiente
+      function irAEditar(id_proyecto, orden_contenido) {
+        const ruta = rutasProyectos[id_proyecto];
+        if (!ruta) {
+          alert("Ruta de proyecto no configurada.");
+          return;
+        }
+        // Ejemplo: /src/contenido/proyectos/II/temas2/con1.html, con2.html, etc.
+        const url = `/src/contenido/proyectos/${ruta.carpeta}/${ruta.prefijo}${orden_contenido}.html`;
+        window.location.href = url;
+      }
+
+      // Función para eliminar un contenido
+      async function eliminarContenido(id) {
+        if (!confirm("¿Seguro que deseas eliminar este contenido?")) return;
+        try {
+          const res = await fetch(API + id, { method: "DELETE" });
+          if (res.ok) {
+            cargarContenidos();
+          } else {
+            alert("No se pudo eliminar el contenido.");
+          }
+        } catch (e) {
+          alert("Error al eliminar el contenido.");
+        }
+      }
+
+      // Genera los campos de teorías dinámicamente
+      function generarCamposTeorias() {
+        const teoriasArea = document.getElementById('teorias-area');
+        // Elimina campos previos excepto el de título
+        teoriasArea.innerHTML = `
+          <div class="form-group">
+            <label for="titulo-input">Título</label>
+            <input type="text" id="titulo-input" name="titulo_contenido" required>
+          </div>
+        `;
+        // Agrega 6 campos de teorías
+        for (let i = 1; i <= 6; i++) {
+          const key = i === 1 ? 'teoria' : `teoria${i}`;
+          teoriasArea.innerHTML += `
+            <div class="form-group">
+              <label for="${key}-input">Teoría ${i}</label>
+              <textarea id="${key}-input" name="${key}" rows="2" ${i === 1 ? 'required' : ''}></textarea>
+            </div>
+          `;
+        }
+      }
+
+      // Abrir y cerrar modal de crear contenido
+      function abrirCrearContenido() {
+        document.getElementById('modal-bg').style.display = "flex";
+        document.getElementById('form-crear').reset();
+        generarCamposTeorias();
+        actualizarOrdenesDisponibles();
+        document.body.classList.add('modal-abierto');
+      }
+      function cerrarCrearContenido() {
+        document.getElementById('modal-bg').style.display = "none";
+        document.body.classList.remove('modal-abierto');
+      }
+
+      // Actualiza las opciones del select de orden según el proyecto seleccionado
+      function actualizarOrdenesDisponibles() {
+        const proyecto = document.getElementById('proyecto-select').value;
+        const ordenSelect = document.getElementById('orden-select');
+        ordenSelect.innerHTML = '<option value="">Seleccione orden</option>';
+        if (!proyecto) return;
+        // Filtrar los contenidos de ese proyecto
+        const usados = contenidosGlobal
+          .filter(c => String(c.id_proyecto) === String(proyecto))
+          .map(c => Number(c.orden_contenido));
+        for (let i = 1; i <= 6; i++) {
+          if (!usados.includes(i)) {
+            ordenSelect.innerHTML += `<option value="${i}">${i}</option>`;
+          }
+        }
+      }
+
+      document.getElementById('proyecto-select').addEventListener('change', actualizarOrdenesDisponibles);
+
+      // Guardar nuevo contenido
+      document.getElementById('form-crear').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        // Guardar saltos de línea tal cual en los campos de teoría
+        const datos = {
+          id_proyecto: Number(document.getElementById('proyecto-select').value),
+          orden_contenido: Number(document.getElementById('orden-select').value),
+          titulo_contenido: document.getElementById('titulo-input').value,
+          teoria: document.getElementById('teoria-input').value,
+          teoria2: document.getElementById('teoria2-input').value,
+          teoria3: document.getElementById('teoria3-input') ? document.getElementById('teoria3-input').value : "",
+          teoria4: document.getElementById('teoria4-input') ? document.getElementById('teoria4-input').value : "",
+          teoria5: document.getElementById('teoria5-input') ? document.getElementById('teoria5-input').value : "",
+          teoria6: document.getElementById('teoria6-input') ? document.getElementById('teoria6-input').value : ""
+        };
+        // Obtener el token del almacenamiento local
+        const token = localStorage.getItem('adminToken'); // <-- Cambiado aquí
+        try {
+          const res = await fetch(API + "create", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}` // <-- Aquí se agrega el token correcto
+            },
+            body: JSON.stringify(datos)
+          });
+          const data = await res.json();
+          if (res.ok && data.data) {
+            cerrarCrearContenido();
+            cargarContenidos();
+          } else {
+            alert(data.message || "Error al guardar el contenido");
+          }
+        } catch (err) {
+          alert("Error de conexión");
+        }
+      });
+
+      // Inicializar
+      cargarContenidos();
+      window.irAEditar = irAEditar;
+      window.eliminarContenido = eliminarContenido;
+      window.abrirCrearContenido = abrirCrearContenido;
+      window.cerrarCrearContenido = cerrarCrearContenido;
+    </script>
+</body>
+</html>

@@ -65,8 +65,8 @@
             line-height: 1.4;
             color: #333;
             position: absolute;
-            bottom: 210px;
-            right: 0;
+            top: 1.5rem;
+            left: -260px;
             display: none;
             animation: fadeIn 0.3s ease-in-out;
             pointer-events: auto;
@@ -86,13 +86,13 @@
         `;
         speechBubble.appendChild(speechTail);
 
-        // Crear la imagen del conejo (sin botón, solo imagen)
+       // Crear la imagen del conejo (sin botón, solo imagen)
         const bunnyImg = document.createElement('img');
         bunnyImg.src = bunnyImages[0];
         bunnyImg.alt = "Bunny";
         bunnyImg.style.cssText = `
-            width: 200px;
-            height: 200px;
+            width: 130px;
+            height: 130px;
             object-fit: contain;
             pointer-events: auto;
             user-select: none;
@@ -244,17 +244,6 @@
                 showRandomPhrase(speechBubble, bunnyImg);
             }
         });
-
-        // Mensaje de presentación al recargar la página
-        setTimeout(() => {
-            showCustomMessage(
-                speechBubble,
-                bunnyImg,
-                "¡Soy Bunny 🐰 y te acompañaré en esta nueva tarea.",
-                8000
-            );
-        }, 1000);
-
         // Iniciar rotación y frases automáticas
         startRotation();
 
