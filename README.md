@@ -1,6 +1,6 @@
 # para iniciar el servidor:
 
-coloca en la terminal: npx http-server -p 3000
+coloca en la terminal: npx http-server -p 3030
 
 
 # software-educativo-T2 Description del proyecto

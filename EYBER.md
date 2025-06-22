@@ -12,7 +12,7 @@ luego me voy a la carpeta principal, la que dice frontend y le doy click derecho
 
 te va abrir la terminal solo de esa parte, alli vas a colococar el comando:
 
-npx http-server -p 3000
+npx http-server -p 3030
 
 Luego te vas a la carpeta backend y haces lo mismo, le das click derecho y seleccionas "abrir terminal integrado" y en la terminal colocas:
 
