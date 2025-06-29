@@ -1,6 +1,7 @@
 const API_URL = "http://localhost:4000/evaluacion/";
 const API_RESULT = "http://localhost:4000/resultados/create";
 const API_STUDENT = "http://localhost:4000/estudiantes/create";
+const API_CONTENIDO = "http://localhost:4000/contenido/";
 
 let preguntas = [];
 let indice = 0;
@@ -17,14 +18,27 @@ function mezclarArray(array) {
     return array;
 }
 
-// Cambiado para proyecto 1, contenido 2 y orden aleatorio
-async function getPreguntasProyecto1Contenido2() {
+// Busca el id_contenido de proyecto 2 (id_proyecto: 3) y orden_contenido: 1
+async function getIdContenidoProyecto2Orden1() {
+    const res = await fetch(API_CONTENIDO);
+    const data = await res.json();
+    const lista = Array.isArray(data.data) ? data.data : (data.data?.data || []);
+    const contenido = lista.find(
+        c => c.id_proyecto === 1 && c.orden_contenido === 5
+    );
+    return contenido ? contenido.id : null;
+}
+
+// Obtiene las preguntas del proyecto 2, contenido orden 1
+async function getPreguntasProyecto2ContenidoOrden1() {
+    const idContenido = await getIdContenidoProyecto2Orden1();
+    if (!idContenido) return [];
     const res = await fetch(API_URL);
     const data = await res.json();
     if (!Array.isArray(data.data)) return [];
-    // Filtra y mezcla aleatoriamente
+    // Filtra por id_proyecto 3 y el id_contenido encontrado
     return mezclarArray(
-        data.data.filter(p => p.id_proyecto === 1 && p.id_contenido === 5)
+        data.data.filter(p => p.id_proyecto === 1 && p.id_contenido === idContenido)
     );
 }
 
@@ -44,16 +58,30 @@ function limpiarPregunta() {
 }
 
 function mostrarBotonEnviar() {
+    // Muestra el botón debajo de las opciones
+    const wrapper = document.getElementById('enviar-evaluacion-wrapper');
+    if (wrapper) wrapper.style.display = "block";
     const btn = document.getElementById('btn-enviar-evaluacion');
-    btn.style.display = "block";
-    btn.onclick = function() {
-        alert("Tu nota final es: " + puntaje);
-        enviarResultadoEstudiante();
-    };
+    if (btn) {
+        btn.style.display = "inline-block";
+        btn.onclick = function() {
+            alert("Tu nota final es: " + puntaje);
+            // Aquí puedes agregar lógica adicional si lo necesitas
+        };
+    }
+    // Oculta el botón de la barra superior si existe
+    const btnTop = document.querySelector('header #btn-enviar-evaluacion');
+    if (btnTop) btnTop.style.display = "none";
 }
 
 function ocultarBotonEnviar() {
-    document.getElementById('btn-enviar-evaluacion').style.display = "none";
+    const wrapper = document.getElementById('enviar-evaluacion-wrapper');
+    if (wrapper) wrapper.style.display = "none";
+    const btn = document.getElementById('btn-enviar-evaluacion');
+    if (btn) btn.style.display = "none";
+    // Oculta el botón de la barra superior si existe
+    const btnTop = document.querySelector('header #btn-enviar-evaluacion');
+    if (btnTop) btnTop.style.display = "none";
 }
 
 function actualizarPregunta() {
@@ -73,7 +101,6 @@ function responder(opcion) {
 
     // Suma los puntos reales de la pregunta si es correcta
     let puntosPregunta = 1;
-    // Acepta string, número o undefined
     if (pregunta.puntos !== undefined && pregunta.puntos !== null && pregunta.puntos !== "") {
         puntosPregunta = Number(pregunta.puntos);
         if (isNaN(puntosPregunta) || puntosPregunta <= 0) puntosPregunta = 1;
@@ -83,67 +110,6 @@ function responder(opcion) {
     }
     indice++;
     actualizarPregunta();
-}
-
-// function mostrarFormularioEstudiante() {
-//     // Muestra el formulario modal para registrar estudiante y nota
-//     const modal = document.getElementById('modal-estudiante');
-//     modal.style.display = "flex";
-//     document.getElementById('nota-final').textContent = puntaje;
-// }
-
-// function cerrarFormularioEstudiante() {
-//     document.getElementById('modal-estudiante').style.display = "none";
-// }
-
-// async function enviarResultadoEstudiante(e) {
-//     e && e.preventDefault();
-//     if (!estudianteRegistrado || !estudianteRegistrado.id) {
-//         alert("Debes registrar tus datos primero.");
-//         return;
-//     }
-//     const token= localStorage.getItem('adminToken');
-//     let exitos = 0;
-//     for (let i = 0; i < respuestas.length; i++) {
-//         const resp = respuestas[i];
-//         const pregunta = preguntas.find(p => p.id === resp.id);
-//         if (!pregunta) continue;
-//         const body = {
-//             id_estudiante: estudianteRegistrado.id,                // ID del estudiante registrado
-//             id_evaluacion: pregunta.id,                            // ID de la pregunta/evaluación
-//             respuesta_seleccionada: String(resp.respuesta),        // Respuesta seleccionada (como string)
-//             es_correcta: pregunta.respuesta_correcta == resp.respuesta // Booleano: si es correcta
-//         };
-
-//         console.log("Enviando resultado:", body);
-//         const res = await fetch(API_RESULT, {
-//             method: "POST",
-//             headers: { "Content-Type": "application/json","Authorization": `Bearer ${token}` },
-//             body: JSON.stringify(body)
-
-//         });
-
-//         console.log("Respuesta del servidor:", res);
-//         // Verifica si la respuesta fue exitosa 
-//         if (res.status==200 || res.ok) {
-//             exitos++;
-//             alert(`Respuesta guardada correctamente`);
-//         } else {
-//             const errorText = await res.text();
-//             console.error("Error al guardar respuesta:", errorText, body);
-//         }
-//     }
-//     if (exitos === respuestas.length) {
-//         document.getElementById('resultado-puntaje').textContent = puntaje;
-//         document.getElementById('modal-resultado').style.display = "flex";
-//     } else {
-//         alert("Ocurrió un error al guardar alguna respuesta. Revisa la consola para más detalles.");
-//     }
-// }
-
-function cerrarModalResultado() {
-    document.getElementById('modal-resultado').style.display = "none";
-    window.location.reload();
 }
 
 // --------- ADMIN: Edición de preguntas ---------
@@ -213,91 +179,27 @@ function editorSiguiente() {
 }
 
 // --------- INICIALIZACIÓN ---------
-// document.addEventListener('DOMContentLoaded', async () => {
-//     // Mostrar formulario estudiante al entrar
-//     document.getElementById('modal-estudiante').style.display = "flex";
-//     document.getElementById('form-estudiante').onsubmit = registrarEstudiante;
-
-//     // Deshabilita preguntas hasta registrar estudiante
-//     document.querySelectorAll('.opcion-btn').forEach(btn => btn.disabled = true);
-
-//     preguntas = await getPreguntasProyecto1Contenido2();
-//     if (preguntas.length > 0) {
-//         indice = 0;
-//         puntaje = 0;
-//         respuestas = [];
-//         actualizarPregunta();
-//     } else {
-//         limpiarPregunta();
-//     }
-
-
-    document.getElementById('opcion-a').onclick = () => responder("1");
-    document.getElementById('opcion-b').onclick = () => responder("2");
-    document.getElementById('opcion-c').onclick = () => responder("3");
-    ocultarBotonEnviar();
-    if (esAdmin()) mostrarBotonEditar(); else ocultarBotonEditar();
-    document.getElementById('btn-editar-evaluacion').onclick = abrirEditorPreguntas;
-    document.getElementById('cerrar-editor').onclick = cerrarEditorPreguntas;
-    document.getElementById('editor-anterior').onclick = editorAnterior;
-    document.getElementById('editor-siguiente').onclick = editorSiguiente;
-    document.getElementById('form-editar').onsubmit = guardarPreguntaEditada;
-
-    document.getElementById('est-numero-lista').addEventListener('input', function() {
-        if (this.value.length > 2) this.value = this.value.slice(0,2);
-    });
-
-
-// async function registrarEstudiante(e) {
-//     e.preventDefault();
-//     const token = localStorage.getItem('adminToken'); // Asegúrate de usar 'adminToken'
-//     const nombre = document.getElementById('est-nombre').value;
-//     const apellido = document.getElementById('est-apellido').value;
-//     const grado = document.getElementById('est-grado').value;
-//     const seccion = document.getElementById('est-seccion').value;
-//     const numero_de_lista = document.getElementById('est-numero-lista').value;
-//     try {
-//         const resEst = await fetch(API_STUDENT, {
-//             method: "POST",
-//             headers: { 
-//                 "Content-Type": "application/json", 
-//                 "Authorization": `Bearer ${token}` // Aquí va el token correctamente
-//             },
-//             body: JSON.stringify({
-//                 nombre_completo: `${nombre} ${apellido}`,
-//                 grado,
-//                 seccion,
-//                 numero_de_lista
-//             })
-//         });
-//         const estudianteResp = await resEst.json();
-//         console.log("Respuesta registro estudiante:", estudianteResp);
-
-//         estudianteRegistrado = estudianteResp.data || estudianteResp;
-//         if (estudianteRegistrado && estudianteRegistrado.id) {
-//             document.getElementById('modal-estudiante').style.display = "none";
-//             document.querySelectorAll('.opcion-btn').forEach(btn => btn.disabled = false);
-//         } else {
-//             alert("No se pudo registrar el estudiante.");
-//         }
-//     } catch (error) {
-//         alert("Error de conexión al registrar estudiante.");
-//     }
-// }// --------- INICIALIZACIÓN ---------
 document.addEventListener('DOMContentLoaded', async () => {
-    preguntas = await getPreguntasProyecto1Contenido2();
+    preguntas = await getPreguntasProyecto2ContenidoOrden1();
+    const evalContainer = document.querySelector('.evaluacion-container');
+    const wrapper = document.getElementById('enviar-evaluacion-wrapper');
     if (preguntas.length > 0) {
         indice = 0;
         puntaje = 0;
         respuestas = [];
+        if (evalContainer) evalContainer.style.display = 'block';
+        if (wrapper) wrapper.style.display = 'none';
         actualizarPregunta();
     } else {
-        limpiarPregunta();
+        // Si no hay preguntas, oculta todo
+        if (evalContainer) evalContainer.style.display = 'none';
+        if (wrapper) wrapper.style.display = 'none';
+        // Opcional: también puedes limpiar el título
+        // document.getElementById('contenido-titulo').textContent = '';
     }
     document.getElementById('opcion-a').onclick = () => responder("1");
     document.getElementById('opcion-b').onclick = () => responder("2");
     document.getElementById('opcion-c').onclick = () => responder("3");
-    ocultarBotonEnviar();
 
     // Mostrar/ocultar edición solo para admin
     if (esAdmin()) {
@@ -326,7 +228,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         btnVolver.style.fontSize = '0.93rem';
         btnVolver.style.padding = '0.22rem 0.9rem';
         btnVolver.style.borderRadius = '20px';
-        btnVolver.style.background = '#f4a261'; // Naranja suave
+        btnVolver.style.background = '#f4a261';
         btnVolver.style.border = 'none';
         btnVolver.style.color = '#1a5a32';
         btnVolver.style.fontWeight = '600';

@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <title>Gestión de Evaluaciones</title>
     <link rel="stylesheet" href="/src/admin/stylo.css">
+    <script>
+      if (!localStorage.getItem('adminToken')) {
+        window.location.href = "/src/Index.html";
+      }
+    </script>
     <style>
       .filtros-eva {
         margin-bottom: 1.5rem;
@@ -235,6 +240,8 @@
       <div id="eva-msg"></div>
     </div>
 
+    <!-- Importa la lógica de cierre de sesión y protección -->
+    <script src="/src/cerrar-sesion.js"></script>
     <script>
 if (!localStorage.getItem('adminToken')) {
   window.location.href = "/src/confirmacion.html";
@@ -277,11 +284,12 @@ function cargarContenidosForm() {
     evaContenido.innerHTML = `<option value="">Seleccione</option>`;
     return;
   }
-  // Filtrar los contenidos por id_proyecto
-  const filtrados = todosLosContenidos.filter(c => String(c.id_proyecto) === idProyecto);
-  console.log("Contenidos filtrados para proyecto", idProyecto, filtrados); // <-- Agregado para depuración
+  // Filtrar y ordenar por orden_contenido
+  const filtrados = todosLosContenidos
+    .filter(c => String(c.id_proyecto) === idProyecto)
+    .sort((a, b) => Number(a.orden_contenido) - Number(b.orden_contenido));
   evaContenido.innerHTML = `<option value="">Seleccione</option>` +
-    filtrados.map((c, i) => `<option value="${c.id}">Contenido ${i + 1}</option>`).join('');
+    filtrados.map(c => `<option value="${c.id}">Contenido ${c.orden_contenido}</option>`).join('');
 }
 evaProyecto.addEventListener('change', cargarContenidosForm);
 
@@ -291,29 +299,49 @@ async function listarEvaluaciones() {
   let result = await res.json();
   let datos = Array.isArray(result) ? result : result.data;
   if (!Array.isArray(datos)) datos = [];
+  evaluaciones = datos; // <-- Actualiza el array global
+
   // Filtro por proyecto
   if (filtroProyectoUnico.value) datos = datos.filter(e => String(e.id_proyecto) === filtroProyectoUnico.value);
   // Filtro por contenido
   if (filtroContenidoSelect.value) datos = datos.filter(e => String(e.id_contenido) === filtroContenidoSelect.value);
-  evaList.innerHTML = datos.map(e => `
-    <tr>
-      <td>${proyectos.find(p => p.id == e.id_proyecto)?.titulo || e.id_proyecto}</td>
-      <td>${e.pregunta}</td>
-      <td>
-        A: ${e.opcion_a}<br>
-        B: ${e.opcion_b}<br>
-        C: ${e.opcion_c}
-      </td>
-      <td>${e.respuesta_correcta}</td>
-      <td>${e.puntos || 1}</td>
-      <td>
-        <div class="acciones-eva">
-          <button onclick="window.location.href='/src/contenido/evaluacion/pro${e.id_proyecto}/eva_pro${e.id_proyecto}_con${e.id_contenido}.html'" class="btn-accion btn-editar" title="Editar evaluación">Editar</button>
-          <button onclick="eliminarEva('${e.id}')" class="btn-accion btn-eliminar" title="Eliminar evaluación">Eliminar</button>
-        </div>
-      </td>
-    </tr>
-  `).join('');
+
+  evaList.innerHTML = datos.map(e => {
+    // Sufijo de proyecto
+    let sufijo = "";
+    if (e.id_proyecto == 1) sufijo = "pro1";
+    else if (e.id_proyecto == 3) sufijo = "pro2";
+    else if (e.id_proyecto == 4) sufijo = "pro3";
+    // Buscar el contenido para obtener el orden_contenido
+    const contenido = todosLosContenidos.find(c => String(c.id) === String(e.id_contenido));
+    // Solo si existe el contenido y su orden_contenido
+    let editarBtn = "";
+    if (contenido && contenido.orden_contenido !== undefined && contenido.orden_contenido !== null) {
+      const rutaEditar = `/src/contenido/evaluacion/${sufijo}/eva_${sufijo}_con${contenido.orden_contenido}.html`;
+      editarBtn = `<button onclick="window.location.href='${rutaEditar}'" class="btn-accion btn-editar" title="Editar evaluación">Editar</button>`;
+    } else {
+      editarBtn = `<button class="btn-accion btn-editar" title="No se encontró el contenido" disabled>Editar</button>`;
+    }
+    return `
+      <tr>
+        <td>${proyectos.find(p => p.id == e.id_proyecto)?.titulo || e.id_proyecto}</td>
+        <td>${e.pregunta}</td>
+        <td>
+          A: ${e.opcion_a}<br>
+          B: ${e.opcion_b}<br>
+          C: ${e.opcion_c}
+        </td>
+        <td>${e.respuesta_correcta}</td>
+        <td>${e.puntos || 1}</td>
+        <td>
+          <div class="acciones-eva">
+            ${editarBtn}
+            <button onclick="eliminarEva('${e.id}')" class="btn-accion btn-eliminar" title="Eliminar evaluación">Eliminar</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
   if (!datos.length) evaList.innerHTML = `<tr><td colspan="6" class="sin-evaluaciones">No hay evaluaciones.</td></tr>`;
 }
 filtroProyectoUnico.addEventListener('change', function() {
@@ -331,8 +359,10 @@ filtroContenidoSelect.addEventListener('change', listarEvaluaciones);
 
 // Cargar opciones de contenido para el filtro
 async function cargarContenidosFiltro(idProyecto) {
-  // Si ya tienes todosLosContenidos cargados, puedes filtrar aquí
-  const filtrados = todosLosContenidos.filter(c => String(c.id_proyecto) === String(idProyecto));
+  // Filtrar y ordenar por orden_contenido
+  const filtrados = todosLosContenidos
+    .filter(c => String(c.id_proyecto) === String(idProyecto))
+    .sort((a, b) => Number(a.orden_contenido) - Number(b.orden_contenido));
   filtroContenidoSelect.innerHTML = `<option value="">Todos</option>` +
     filtrados.map(c => `<option value="${c.id}">Contenido ${c.orden_contenido}</option>`).join('');
 }
@@ -355,19 +385,37 @@ window.cerrarCrearEvaluacion = function() {
 // Guardar evaluación (crear o editar)
 evaForm.onsubmit = async e => {
   e.preventDefault();
-  await guardarPregunta();
-  evaMsg.textContent = "¡Guardado!";
-  evaForm.reset();
-  evaId.value = "";
-  evaCancel.style.display = "none";
-  listarEvaluaciones();
-  document.getElementById('modal-eva-bg').style.display = "none";
+  const ok = await guardarPregunta();
+  if (ok) {
+    alert("¡Guardado!");
+    evaForm.reset();
+    evaId.value = "";
+    evaCancel.style.display = "none";
+    await listarEvaluaciones();
+    mostrarPuntosDisponibles();
+    document.getElementById('modal-eva-bg').style.display = "none";
+  }
 };
 
 // Guardar y limpiar solo pregunta/opciones (mantener proyecto/contenido)
 document.getElementById('eva-add-more').onclick = async function() {
   if (!evaProyecto.value || !evaContenido.value) {
-    evaMsg.textContent = "Selecciona proyecto y contenido.";
+    alert("Selecciona proyecto y contenido.");
+    return;
+  }
+  // Calcular puntos disponibles antes de guardar
+  let puntosUsados = 0;
+  for (const e of evaluaciones) {
+    if (
+      String(e.id_contenido) === String(evaContenido.value) &&
+      (!evaId.value || String(e.id) !== String(evaId.value))
+    ) {
+      puntosUsados += Number(e.puntos || 1);
+    }
+  }
+  const puntosDisponibles = 20 - puntosUsados;
+  if (puntosDisponibles <= 0) {
+    alert("No puedes agregar más preguntas");
     return;
   }
   const ok = await guardarPregunta();
@@ -379,13 +427,53 @@ document.getElementById('eva-add-more').onclick = async function() {
     document.getElementById('eva-op3').value = "";
     document.getElementById('eva-correcta').value = "1";
     document.getElementById('eva-puntos').value = "1";
-    evaMsg.textContent = "Pregunta agregada. Puedes ingresar otra.";
+    alert("Pregunta agregada. Puedes ingresar otra.");
     document.getElementById('eva-pregunta').focus();
-    listarEvaluaciones();
+    await listarEvaluaciones();
+    mostrarPuntosDisponibles();
   }
 };
 
-// Función para guardar pregunta (usada por ambos botones)
+// Mostrar puntos disponibles para el contenido seleccionado
+function mostrarPuntosDisponibles() {
+  const idContenido = evaContenido.value;
+  if (!idContenido) {
+    document.getElementById('eva-puntos').max = 20;
+    document.getElementById('eva-puntos').value = 1;
+    document.getElementById('eva-puntos-msg')?.remove();
+    return;
+  }
+  // Sumar puntos de las preguntas ya existentes para ese contenido (excepto la que se está editando)
+  let puntosUsados = 0;
+  for (const e of evaluaciones) {
+    if (
+      String(e.id_contenido) === String(idContenido) &&
+      (!evaId.value || String(e.id) !== String(evaId.value))
+    ) {
+      puntosUsados += Number(e.puntos || 1);
+    }
+  }
+  const puntosDisponibles = 20 - puntosUsados;
+  document.getElementById('eva-puntos').max = puntosDisponibles > 0 ? puntosDisponibles : 1;
+  if (Number(document.getElementById('eva-puntos').value) > puntosDisponibles) {
+    document.getElementById('eva-puntos').value = puntosDisponibles > 0 ? puntosDisponibles : 1;
+  }
+  // Mostrar mensaje de puntos disponibles
+  let msg = document.getElementById('eva-puntos-msg');
+  if (!msg) {
+    msg = document.createElement('span');
+    msg.id = 'eva-puntos-msg';
+    msg.style.marginLeft = "0.7rem";
+    msg.style.color = "#219150";
+    document.getElementById('eva-puntos').after(msg);
+  }
+  msg.textContent = `Puntos disponibles: ${puntosDisponibles}`;
+}
+evaContenido.addEventListener('change', mostrarPuntosDisponibles);
+evaProyecto.addEventListener('change', mostrarPuntosDisponibles);
+document.getElementById('eva-puntos').addEventListener('input', mostrarPuntosDisponibles);
+
+// Modifica guardarPregunta para usar alert en vez de evaMsg
 async function guardarPregunta() {
   const data = {
     id_proyecto: evaProyecto.value,
@@ -398,7 +486,22 @@ async function guardarPregunta() {
     puntos: document.getElementById('eva-puntos').value
   };
   if (!data.pregunta || !data.opcion_a || !data.opcion_b || !data.opcion_c) {
-    evaMsg.textContent = "Completa todos los campos de la pregunta.";
+    alert("Completa todos los campos de la pregunta.");
+    return false;
+  }
+  // Validar puntos disponibles
+  let puntosUsados = 0;
+  for (const e of evaluaciones) {
+    if (
+      String(e.id_contenido) === String(data.id_contenido) &&
+      (!evaId.value || String(e.id) !== String(evaId.value))
+    ) {
+      puntosUsados += Number(e.puntos || 1);
+    }
+  }
+  const puntosDisponibles = 20 - puntosUsados;
+  if (Number(data.puntos) > puntosDisponibles) {
+    alert(`Solo puedes asignar hasta ${puntosDisponibles} puntos a esta pregunta.`);
     return false;
   }
   let url = API + "/evaluacion/create";
@@ -420,7 +523,7 @@ async function guardarPregunta() {
     evaId.value = ""; // Siempre limpiar para modo agregar
     return true;
   } else {
-    evaMsg.textContent = result.message || "Error";
+    alert(result.message || "Error");
     return false;
   }
 }
@@ -429,11 +532,10 @@ async function guardarPregunta() {
 window.editarEva = function(id) {
   fetch(API + "/evaluacion/" + id, { headers: { Authorization: "Bearer " + token } })
     .then(res => res.json())
-    .then(e => {
+    .then(async e => {
       evaProyecto.value = e.id_proyecto;
-      cargarContenidosForm().then(() => {
-        evaContenido.value = e.id_contenido;
-      });
+      await cargarContenidosForm();
+      evaContenido.value = e.id_contenido;
       document.getElementById('eva-pregunta').value = e.pregunta;
       document.getElementById('eva-op1').value = e.opcion_a;
       document.getElementById('eva-op2').value = e.opcion_b;
@@ -465,6 +567,5 @@ window.eliminarEva = function(id) {
 // Inicializar
 listarEvaluaciones();
     </script>
-    <script src="/src/cerrar-sesion.js"></script>
 </body>
 </html>

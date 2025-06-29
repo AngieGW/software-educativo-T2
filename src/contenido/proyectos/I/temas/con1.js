@@ -119,6 +119,36 @@ function abrirModalEditar() {
     `;
   }
   document.getElementById('edit-teorias').innerHTML = html;
+
+  // Lógica para habilitar/deshabilitar campos
+  function actualizarCamposTeoria() {
+    for (let i = 1; i <= 10; i++) {
+      const key = i === 1 ? 'teoria' : `teoria${i}`;
+      const textarea = document.getElementById(`edit-${key}`);
+      if (i === 1) {
+        textarea.disabled = false;
+      } else {
+        const anteriorKey = i === 2 ? 'teoria' : `teoria${i-1}`;
+        const anterior = document.getElementById(`edit-${anteriorKey}`);
+        // Debe tener al menos 40 caracteres (sin contar espacios al inicio/fin)
+        if (anterior.value.trim().length >= 40) {
+          textarea.disabled = false;
+        } else {
+          textarea.value = "";
+          textarea.disabled = true;
+        }
+      }
+    }
+  }
+
+  // Ejecuta al abrir el modal
+  actualizarCamposTeoria();
+
+  // Añade listeners para actualizar al escribir
+  for (let i = 1; i <= 10; i++) {
+    const key = i === 1 ? 'teoria' : `teoria${i}`;
+    document.getElementById(`edit-${key}`).addEventListener('input', actualizarCamposTeoria);
+  }
 }
 
 // Cierra el modal de edición
@@ -132,9 +162,22 @@ async function guardarCambios(e) {
   if (!contenidoActual) return;
   const nuevoTitulo = document.getElementById('edit-titulo').value;
   let nuevasTeorias = {};
+  let ultimaNoVacia = 0;
+  // Detecta la última teoría no vacía
   for (let i = 1; i <= 10; i++) {
     const key = i === 1 ? 'teoria' : `teoria${i}`;
-    nuevasTeorias[key] = document.getElementById(`edit-${key}`).value;
+    const valor = document.getElementById(`edit-${key}`).value.trim();
+    nuevasTeorias[key] = valor;
+    if (valor) ultimaNoVacia = i;
+  }
+  // Valida que no haya campos intermedios vacíos
+  for (let i = 1; i <= ultimaNoVacia; i++) {
+    const key = i === 1 ? 'teoria' : `teoria${i}`;
+    if (!nuevasTeorias[key]) {
+      alert(`No puedes dejar la Teoría ${i} vacía si llenas una posterior.`);
+      document.getElementById(`edit-${key}`).focus();
+      return;
+    }
   }
   // Prepara el objeto para enviar
   const datos = {

@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <title>Registro de Docente Administrador</title>
   <link rel="stylesheet" href="/src/admin/stylo.css">
+  <script>
+    if (!localStorage.getItem('adminToken')) {
+      window.location.href = "/src/Index.html";
+    }
+  </script>
   <style>
     .registro-container {
       max-width: 400px;
@@ -118,12 +123,13 @@
       <input type="password" name="clave" id="clave" placeholder="Clave" required minlength="4">
 
       <div class="botones-inferiores">
-        <button type="button" class="btn-volver" onclick="window.history.back()">← Volver</button>
+        <button type="button" class="btn-volver" onclick="window.location.href='/src/menu.html'">← Volver</button>
         <button type="submit" class="btn-registrar">Registrar</button>
       </div>
     </form>
     <div id="registro-msg"></div>
   </div>
+  <script src="/src/cerrar-sesion.js"></script>
   <script>
     // Proteger acceso: solo admins con token pueden entrar
     if (!localStorage.getItem('adminToken')) {
@@ -172,6 +178,5 @@
       }
     };
   </script>
-  <script src="/src/cerrar-sesion.js"></script>
 </body>
 </html>

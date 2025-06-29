@@ -151,6 +151,25 @@
   }
 }
 
+#enviar-evaluacion-wrapper {
+    display: none;
+    margin-top: 2rem;
+    text-align: center;
+}
+#btn-enviar-evaluacion {
+    font-size: 1.3rem;
+    padding: 1rem 2.5rem;
+    border-radius: 8px;
+    background: #2a9d8f;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 8px #2a9d8f22;
+    transition: background 0.2s;
+}
+#btn-enviar-evaluacion:hover {
+    background: #21867a;
+}
 </style>
 </head>
 <body>
@@ -185,11 +204,11 @@
             <!-- Encabezado -->
             <header class="header">
                 <div>
-                    <a class="logout-btn" href="/src/contenido/evaluacion/eva_pro1.html">Atrás</a>
+                    <a class="logout-btn" href="/src/contenido/evaluacion/eva_pro3.html">Atrás</a>
                 </div>
-                <h1 id="contenido-titulo">EVALUACIÓN CONTENIDO 2</h1>
-                <button id="btn-enviar-evaluacion" class="logout-btn" style="display:none; margin-left:1rem;">Enviar evaluación</button>
-<button id="btn-editar-evaluacion" class="logout-btn" style="display:none; margin-left:1rem;">Editar preguntas</button>
+                <h1 id="contenido-titulo">EVALUACIÓN CONTENIDO 3</h1>
+                <!-- <button id="btn-enviar-evaluacion" class="logout-btn" style="display:none; margin-left:1rem;">Enviar evaluación</button> -->
+                <button id="btn-editar-evaluacion" class="logout-btn" style="display:none; margin-left:1rem;">Editar preguntas</button>
                 <button class="logout-btn" onclick="cerrarSesionAdmin()">
                     <i class="fas fa-sign-out-alt"></i> Cerrar sesión
                 </button>
@@ -219,6 +238,11 @@
                         <button class="opcion-btn" data-opcion="C" id="opcion-c">
                             <span class="opcion-letra">C</span>
                             <span class="opcion-texto" id="texto-c">Opción C</span>
+                        </button>
+                    </div>
+                    <div id="enviar-evaluacion-wrapper" style="display:none; margin-top:2rem; text-align:center;">
+                        <button id="btn-enviar-evaluacion" class="logout-btn" style="font-size:1.3rem;padding:1rem 2.5rem;">
+                            Enviar evaluación
                         </button>
                     </div>
                 </div>

@@ -4,22 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const credentialInput = document.getElementById('credential');
     const errorMessage = document.getElementById('errorMessage');
 
-   /* Apartado Iconos Boton */
-let mostrarIconos = document.getElementById("mostrar-iconos");
-let eyeOpen = document.querySelector(".icono-eye-open");
-let eyeClosed = document.querySelector(".icono-eye-closed");
-
-mostrarIconos.addEventListener("click", () =>{
-    const contraseña = passwordField.type === "password";
-    passwordField.type = contraseña ? "text" : "password";
-
-    eyeOpen.style.display = contraseña ? "inherit" : "none"; 
-    eyeClosed.style.display = contraseña ? "none" : "inherit";
-    eyeOpen.style.display = "none"; // Asegura que esté oculto al cargar
-    eyeClosed.style.display = "inline"; // Asegura que el cerrado sí se muestre
-
-} ) 
-
     if (loginForm) {
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();

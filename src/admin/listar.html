@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <title>Lista de Docentes Administradores</title>
   <link rel="stylesheet" href="/src/admin/stylo.css">
+  <script>
+    if (!localStorage.getItem('adminToken')) {
+      window.location.href = "/src/Index.html";
+    }
+  </script>
   <style>
     .lista-container {
       max-width: 600px;
@@ -108,6 +113,7 @@
       </tbody>
     </table>
   </div>
+  <script src="/src/cerrar-sesion.js"></script>
   <script>
     // Proteger acceso: solo admins con token pueden entrar
     if (!localStorage.getItem('adminToken')) {
@@ -193,6 +199,5 @@
 
     cargarAdmins();
   </script>
-  <script src="/src/cerrar-sesion.js"></script>
 </body>
 </html>

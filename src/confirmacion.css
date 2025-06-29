@@ -148,15 +148,11 @@ input:focus {
     position: absolute;
     right: 1rem;
     top: 50%;
-    display: inline;
     transform: translateY(-50%);
     cursor: pointer;
     color: var(--color-verde-oscuro);
     font-size: 1.2rem;
     z-index: 2;
-}
-.icono-eye-open{
-    display: none;
 }
 
 .boton-ingresar {

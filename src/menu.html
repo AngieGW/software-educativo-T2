@@ -112,23 +112,33 @@ if (localStorage.getItem('adminToken')) {
 }
 </script>
 
-// se muestre la mascota en administrador
+
 <script src="/src/cerrar-sesion.js"></script>
 <script>
 if (!localStorage.getItem('adminToken')) {
   var s = document.createElement('script');
-  s.src = '/src/funciones/bunny-button.js';
+  s.src = '/src/funciones/bunny-pet.js';
   document.head.appendChild(s);
 }
 </script>
 
 
 <script>
-  // Mostrar alerta de bienvenida solo si viene del botón de estudiante
   if (sessionStorage.getItem('bienvenidaEstudiante')) {
     alert('¡Bienvenido/a estudiante!');
     sessionStorage.removeItem('bienvenidaEstudiante');
   }
+</script>
+
+<script>
+// Evita ir hacia atrás desde esta página
+window.addEventListener('DOMContentLoaded', function() {
+  // Reemplaza el historial para que no haya página anterior
+  window.history.pushState(null, '', window.location.href);
+  window.addEventListener('popstate', function(event) {
+    window.history.pushState(null, '', window.location.href);
+  });
+});
 </script>
 </body>
 </html>

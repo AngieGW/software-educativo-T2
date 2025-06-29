@@ -2,6 +2,30 @@
 // Archivo: bunny-pet.js
 
 (function() {
+    // Frases de saludo de bienvenida (20 frases)
+    const welcomePhrases = [
+        "Soy Bunny, tu compañero de aprendizaje 🐰",
+        "Hoy es un gran día para aprender juntos.",
+        "¿Listo para descubrir cosas nuevas?",
+        "Bunny está aquí para motivarte.",
+        "Recuerda que cada día es una oportunidad para crecer.",
+        "Estoy feliz de verte estudiando.",
+        "¿Preparado para un nuevo reto?",
+        "Juntos lograremos grandes cosas.",
+        "Tu esfuerzo de hoy será tu éxito de mañana.",
+        "Bunny te acompaña en cada paso.",
+        "Aprender es divertido cuando tienes compañía.",
+        "Hoy puedes lograr todo lo que te propongas.",
+        "Recuerda que cada pequeño avance cuenta.",
+        "Estoy aquí para animarte siempre.",
+        "El conocimiento es tu mejor herramienta.",
+        "Vamos a hacer de este día algo productivo.",
+        "No olvides sonreír mientras aprendes.",
+        "Cada página leída es un logro más.",
+        "Estoy orgulloso de tu dedicación.",
+        "Juntos, el aprendizaje es más fácil."
+    ];
+
     // Frases motivacionales sobre seguir leyendo el tema (más frases)
     const readingPhrases = [
         "¡Sigue leyendo! Cada párrafo te acerca a dominar el tema 📚",
@@ -178,6 +202,21 @@
         }, 10000);
     }
 
+    // NUEVO: Mostrar saludo de bienvenida al cargar la página
+    function showWelcomePhrase(speechBubble, bunnyImg) {
+        const randomIndex = Math.floor(Math.random() * welcomePhrases.length);
+        const phrase = welcomePhrases[randomIndex];
+        speechBubble.textContent = phrase;
+        speechBubble.style.display = 'block';
+        bunnyImg.classList.add('bounce');
+        setTimeout(() => {
+            bunnyImg.classList.remove('bounce');
+        }, 600);
+        setTimeout(() => {
+            speechBubble.style.display = 'none';
+        }, 10000);
+    }
+
     // Función principal para inicializar la mascota
     function initializeBunny() {
         if (document.readyState === 'loading') {
@@ -244,8 +283,14 @@
                 showRandomPhrase(speechBubble, bunnyImg);
             }
         });
-        // Iniciar rotación y frases automáticas
-        startRotation();
+
+        // Mostrar saludo de bienvenida al cargar la página
+        showWelcomePhrase(speechBubble, bunnyImg);
+
+        // Iniciar rotación y frases automáticas después del saludo
+        setTimeout(() => {
+            startRotation();
+        }, 10000);
 
         // Mensaje de bienvenida en consola
         console.log('🐰 ¡Bunny está listo para motivarte en tu aprendizaje!');

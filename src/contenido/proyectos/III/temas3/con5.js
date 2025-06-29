@@ -11,10 +11,10 @@ async function getContenidos() {
   return Array.isArray(data.data) ? data.data : [];
 }
 
-// Muestra el contenido 1 del proyecto 1
+// Muestra el contenido 5 del proyecto 3
 async function mostrarContenido1Proyecto1() {
   const contenidos = await getContenidos();
-  // Busca el contenido con id_proyecto = 1 y orden_contenido = 1
+  // Busca el contenido con id_proyecto = 3 y orden_contenido = 5
   contenidoActual = contenidos.find(
     c => c.id_proyecto === 4 && c.orden_contenido === 5
   );
@@ -56,6 +56,16 @@ function mostrarTeoriaActual() {
   `;
 }
 
+// Función para ir a la evaluación cuando se termina el contenido
+function irAEvaluacionSiFinalizaContenido() {
+  // Solo si estamos en la última teoría
+  if (teoriaIndex === teoriasKeys.length - 1) {
+    setTimeout(() => {
+      window.location.href = "/src/contenido/evaluacion/pro1/eva_pro1_con4.html";
+    }, 1000);
+  }
+}
+
 // Navega entre teorías
 function cambiarTeoria(direccion) {
   if (!teoriasKeys.length) return;
@@ -66,16 +76,6 @@ function cambiarTeoria(direccion) {
   // Si es la última teoría y el usuario avanza, redirige a la evaluación
   if (teoriaIndex === teoriasKeys.length - 1 && direccion > 0) {
     irAEvaluacionSiFinalizaContenido();
-  }
-}
-
-// Función para ir a la evaluación cuando se termina el contenido
-function irAEvaluacionSiFinalizaContenido() {
-  // Solo si estamos en la última teoría
-  if (teoriaIndex === teoriasKeys.length - 1) {
-    setTimeout(() => {
-      window.location.href = "/src/contenido/evaluacion/pro3/eva_pro3_con5.html";
-    }, 1000);
   }
 }
 
@@ -118,6 +118,36 @@ function abrirModalEditar() {
     `;
   }
   document.getElementById('edit-teorias').innerHTML = html;
+
+  // Lógica para habilitar/deshabilitar campos
+  function actualizarCamposTeoria() {
+    for (let i = 1; i <= 10; i++) {
+      const key = i === 1 ? 'teoria' : `teoria${i}`;
+      const textarea = document.getElementById(`edit-${key}`);
+      if (i === 1) {
+        textarea.disabled = false;
+      } else {
+        const anteriorKey = i === 2 ? 'teoria' : `teoria${i-1}`;
+        const anterior = document.getElementById(`edit-${anteriorKey}`);
+        // Debe tener al menos 40 caracteres (sin contar espacios al inicio/fin)
+        if (anterior.value.trim().length >= 40) {
+          textarea.disabled = false;
+        } else {
+          textarea.value = "";
+          textarea.disabled = true;
+        }
+      }
+    }
+  }
+
+  // Ejecuta al abrir el modal
+  actualizarCamposTeoria();
+
+  // Añade listeners para actualizar al escribir
+  for (let i = 1; i <= 10; i++) {
+    const key = i === 1 ? 'teoria' : `teoria${i}`;
+    document.getElementById(`edit-${key}`).addEventListener('input', actualizarCamposTeoria);
+  }
 }
 
 // Cierra el modal de edición

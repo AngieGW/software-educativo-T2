@@ -119,6 +119,31 @@ function abrirModalEditar() {
     `;
   }
   document.getElementById('edit-teorias').innerHTML = html;
+
+  // Lógica para habilitar/deshabilitar campos
+  function actualizarCamposTeoria() {
+    for (let i = 1; i <= 10; i++) {
+      const key = i === 1 ? 'teoria' : `teoria${i}`;
+      const textarea = document.getElementById(`edit-${key}`);
+      if (i === 1) {
+        textarea.disabled = false;
+      } else {
+        const anteriorKey = i === 2 ? 'teoria' : `teoria${i-1}`;
+        const anterior = document.getElementById(`edit-${anteriorKey}`);
+        // Debe tener al menos 50 caracteres (sin contar espacios al inicio/fin)
+        textarea.disabled = anterior.value.trim().length < 40;
+      }
+    }
+  }
+
+  // Ejecuta al abrir el modal
+  actualizarCamposTeoria();
+
+  // Añade listeners para actualizar al escribir
+  for (let i = 1; i <= 10; i++) {
+    const key = i === 1 ? 'teoria' : `teoria${i}`;
+    document.getElementById(`edit-${key}`).addEventListener('input', actualizarCamposTeoria);
+  }
 }
 
 // Cierra el modal de edición

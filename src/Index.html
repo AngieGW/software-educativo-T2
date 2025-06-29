@@ -167,5 +167,19 @@
     window.location.href = 'menu.html';
   };
 </script>
+<script>
+// Verifica el token al cargar y al volver con "Atrás"
+function checkToken() {
+  if (localStorage.getItem('adminToken')) {
+    window.location.href = "menu.html";
+  }
+}
+
+// Ejecuta al cargar la página
+checkToken();
+
+// Ejecuta también si se vuelve con el botón "Atrás"
+window.addEventListener('pageshow', checkToken);
+</script>
 </body>
 </html>

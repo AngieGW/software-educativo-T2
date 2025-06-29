@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <title>Gestión de Contenidos</title>
     <link rel="stylesheet" href="/src/admin/stylo.css">
+    <script>
+      // Protección: solo admins autenticados pueden acceder
+      if (!localStorage.getItem('adminToken')) {
+        window.location.href = "/src/Index.html";
+      }
+    </script>
     <style>
       body {
         background: #f8fafb;
@@ -258,6 +264,8 @@
       </form>
     </div>
 
+    <!-- Importa la lógica de cierre de sesión y protección -->
+    <script src="/src/cerrar-sesion.js"></script>
     <script>
       const API = "http://localhost:4000/contenido/";
 
@@ -359,18 +367,26 @@
       async function eliminarContenido(id) {
         if (!confirm("¿Seguro que deseas eliminar este contenido?")) return;
         try {
-          const res = await fetch(API + id, { method: "DELETE" });
+          // Obtener el token del almacenamiento local
+          const token = localStorage.getItem('adminToken');
+          const res = await fetch(API + id, {
+            method: "DELETE",
+            headers: {
+              "Authorization": `Bearer ${token}`
+            }
+          });
           if (res.ok) {
             cargarContenidos();
           } else {
-            alert("No se pudo eliminar el contenido.");
+            const data = await res.json();
+            alert(data.message || "No se pudo eliminar el contenido.");
           }
         } catch (e) {
           alert("Error al eliminar el contenido.");
         }
       }
 
-      // Genera los campos de teorías dinámicamente
+      // Genera los campos de teorías dinámicamente y aplica la lógica de habilitar/deshabilitar
       function generarCamposTeorias() {
         const teoriasArea = document.getElementById('teorias-area');
         // Elimina campos previos excepto el de título
@@ -386,9 +402,29 @@
           teoriasArea.innerHTML += `
             <div class="form-group">
               <label for="${key}-input">Teoría ${i}</label>
-              <textarea id="${key}-input" name="${key}" rows="2" ${i === 1 ? 'required' : ''}></textarea>
+              <textarea id="${key}-input" name="${key}" rows="2" ${i === 1 ? 'required' : 'disabled'}></textarea>
             </div>
           `;
+        }
+
+        // Lógica para habilitar/deshabilitar campos de teoría
+        for (let i = 2; i <= 6; i++) {
+          const anterior = document.getElementById(i === 2 ? 'teoria-input' : `teoria${i-1}-input`);
+          const actual = document.getElementById(`teoria${i}-input`);
+          anterior.addEventListener('input', function() {
+            if (anterior.value.trim() !== "") {
+              actual.removeAttribute('disabled');
+            } else {
+              actual.value = "";
+              actual.setAttribute('disabled', 'disabled');
+              // También deshabilita los siguientes
+              for (let j = i + 1; j <= 6; j++) {
+                const siguiente = document.getElementById(`teoria${j}-input`);
+                siguiente.value = "";
+                siguiente.setAttribute('disabled', 'disabled');
+              }
+            }
+          });
         }
       }
 
@@ -427,6 +463,18 @@
       // Guardar nuevo contenido
       document.getElementById('form-crear').addEventListener('submit', async function(e) {
         e.preventDefault();
+
+        // Validación de campos de teoría: no puede haber un campo posterior lleno si el anterior está vacío
+        for (let i = 1; i <= 6; i++) {
+            const actual = document.getElementById(i === 1 ? 'teoria-input' : `teoria${i}-input`);
+            const anterior = i === 1 ? null : document.getElementById(i === 2 ? 'teoria-input' : `teoria${i-1}-input`);
+            if (actual && anterior && actual.value.trim() && !anterior.value.trim()) {
+                alert(`No puedes llenar la Teoría ${i} si la Teoría ${i-1} está vacía.`);
+                actual.focus();
+                return;
+            }
+        }
+
         // Guardar saltos de línea tal cual en los campos de teoría
         const datos = {
           id_proyecto: Number(document.getElementById('proyecto-select').value),
